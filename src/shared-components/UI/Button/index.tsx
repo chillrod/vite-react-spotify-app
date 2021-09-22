@@ -5,8 +5,8 @@ import { Button } from "@chakra-ui/react";
 interface ButtonProps {
   text: string;
   color?: string;
-  isLoading: boolean;
-  isSubmit: boolean;
+  isLoading?: boolean;
+  isSubmit?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
