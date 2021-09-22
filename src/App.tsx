@@ -1,11 +1,13 @@
 import React from "react";
 
-import { TitleComponent } from "./shared-components/UI/Title";
+import { UserContent } from "./modules/user-content";
+import { NavBar } from "./shared-components/UI/Navbar";
 
 export const App = () => {
   return (
     <div>
-      <TitleComponent title="spotleaf" />
+      <NavBar />
+      <UserContent />
     </div>
   );
 };
