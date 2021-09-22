@@ -6,13 +6,19 @@ interface HandleTokenProps {
   code: string;
   redirect_uri: string;
   client_id?: string;
-  client_secret?: string;
+  client_secret?: string | true | undefined;
 }
 
-const client_id = "8210f316a4f6404dab30d2e736a6099d";
-const client_secret = import.meta.env.VITE_CLIENT_SECRET;
+/* TO-DO
+[ ] - Change client_id, client_secret to Base64 Header
+*/
 
-export const handleToken = async ({ code, redirect_uri }: HandleTokenProps) => {
+export const handleToken = async ({
+  code,
+  redirect_uri,
+  client_id,
+  client_secret,
+}: HandleTokenProps) => {
   const params = {
     code,
     grant_type: "authorization_code",
@@ -30,7 +36,11 @@ export const handleToken = async ({ code, redirect_uri }: HandleTokenProps) => {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        const { data } = res;
+
+        localStorage.setItem("access_token", data.access_token);
+      });
   } catch (err) {
     console.log(err);
   }

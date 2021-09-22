@@ -1,17 +1,23 @@
 import React from "react";
+import { handleAuthorization } from "./hooks/handleAuthorization";
 
 import { AuthContainer } from "./styles";
-
 import { ButtonComponent } from "../../../../shared-components/UI/Button";
-
-import { handleAuthorization } from "./hooks/handleAuthorization";
 import { TextComponent } from "../../../../shared-components/UI/Text";
 
 interface AuthSectionProps {
   authBehavior: string;
+  client_id: string;
+  redirect_uri: string;
+  scopes: string[];
 }
 
-export const AuthSection: React.FC<AuthSectionProps> = ({ authBehavior }) => {
+export const AuthSection: React.FC<AuthSectionProps> = ({
+  authBehavior,
+  client_id,
+  redirect_uri,
+  scopes,
+}) => {
   return (
     <>
       {authBehavior === "GET_AUTHORIZATION" && (
@@ -21,8 +27,14 @@ export const AuthSection: React.FC<AuthSectionProps> = ({ authBehavior }) => {
             size="xl"
             text="Hello! Please log-in to Spotify to continue"
           />
-          <AuthContainer onSubmit={handleAuthorization}>
-            <ButtonComponent isSubmit text="Login" color="teal" />
+          <AuthContainer>
+            <ButtonComponent
+              onClick={() =>
+                handleAuthorization({ event, client_id, redirect_uri, scopes })
+              }
+              text="Login"
+              color="teal"
+            />
           </AuthContainer>
         </>
       )}
