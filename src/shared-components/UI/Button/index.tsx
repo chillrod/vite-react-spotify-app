@@ -6,16 +6,25 @@ interface ButtonProps {
   text: string;
   color?: string;
   isLoading: boolean;
+  isSubmit: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ButtonComponent: React.FC<ButtonProps> = ({
   text,
   color,
   isLoading = false,
+  onClick,
+  isSubmit = false,
 }) => {
   return (
     <>
-      <Button isLoading={isLoading} colorScheme={color}>
+      <Button
+        type={isSubmit ? "submit" : "button"}
+        isLoading={isLoading}
+        colorScheme={color}
+        onClick={onClick}
+      >
         {text}
       </Button>
     </>

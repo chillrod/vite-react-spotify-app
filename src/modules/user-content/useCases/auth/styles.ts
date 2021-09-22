@@ -1,3 +1,5 @@
 import styled from "styled-components";
 
-export const AuthContainer = styled.section``;
+export const AuthContainer = styled.form`
+  margin: 2em 0;
+`;
