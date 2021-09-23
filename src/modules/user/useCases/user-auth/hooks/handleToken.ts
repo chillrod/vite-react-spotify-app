@@ -10,6 +10,12 @@ interface HandleTokenProps {
   client_secret?: string | true | undefined;
 }
 
+interface TokenRequest {
+  data: {
+    access_token: string;
+  };
+}
+
 /* TO-DO
 [ ] - Change client_id, client_secret to Base64 Header
 */
@@ -26,7 +32,7 @@ export const handleToken = async ({
   const paramsToQueryString = new URLSearchParams(params);
 
   try {
-    const request = await axios.post(
+    const request: TokenRequest = await axios.post(
       handleTokenBaseURL,
       paramsToQueryString.toString(),
       {
@@ -38,7 +44,7 @@ export const handleToken = async ({
 
     const { access_token } = request.data;
 
-    return { access_token };
+    return access_token;
   } catch (err: any) {
     throw new Error(err);
   }

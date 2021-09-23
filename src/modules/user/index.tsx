@@ -12,17 +12,20 @@ import { UserDataController } from "./useCases/user-data/controller";
 import { UserSection } from "./styles";
 
 export const User = () => {
-  const [isUserLogged, setIsUserLogged] = useState(false);
-
   const [authBehavior, setAuthBehavior] = useState("GET_AUTHORIZATION");
   const { grant_type, client_id, client_secret, redirect_uri, scopes } =
     oAuthCredentials;
 
-  const setAccessToken = useSetRecoilState(UserAuthController.state.set);
-
+  const setAccessToken = useSetRecoilState(UserAuthController.state.setToken);
+  const setIsUserAuthenticated = useSetRecoilState(
+    UserAuthController.state.setIsUserAuthenticated
+  );
   const setUserData = useSetRecoilState(UserDataController.state.set);
 
   const getUserData = useRecoilValue(UserDataController.state.get);
+  const getIsUserAuthenticated = useRecoilValue(
+    UserAuthController.state.getIsUserAuthenticated
+  );
 
   const getQueryString = new URLSearchParams(window.location.search);
 
@@ -40,16 +43,15 @@ export const User = () => {
           client_id,
           client_secret,
         })
-        .then((res) => {
-          setAccessToken(res.access_token);
+        .then((access_token) => {
+          setAccessToken(access_token);
 
           UserDataController.hooks
-            .handleAuthenticatedUser(res)
+            .handleAuthenticatedUser({ access_token })
             .then((userResponse) => {
               if (userResponse) {
                 setUserData({ ...userResponse });
-
-                setIsUserLogged(true);
+                setIsUserAuthenticated(true);
               }
             });
         });
@@ -61,7 +63,7 @@ export const User = () => {
 
   return (
     <UserSection>
-      {!isUserLogged && (
+      {!getIsUserAuthenticated && (
         <AuthSection
           authBehavior={authBehavior}
           client_id={client_id}
@@ -70,7 +72,7 @@ export const User = () => {
         />
       )}
 
-      {isUserLogged && <UserDataSection user={getUserData} />}
+      {getIsUserAuthenticated && <UserDataSection user={getUserData} />}
     </UserSection>
   );
 };

@@ -1,7 +1,7 @@
 export const oAuthCredentials = {
   client_id: "8210f316a4f6404dab30d2e736a6099d",
 
-  client_secret: import.meta.env.VITE_CLIENT_SECRET || "",
+  client_secret: import.meta.env.VITE_SPOTIFY_CLIENT_SECRET || "",
 
   redirect_uri: "http://localhost:3000",
 

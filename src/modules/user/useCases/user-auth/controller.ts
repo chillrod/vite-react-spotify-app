@@ -4,10 +4,15 @@ import { getAccessToken } from "../../getters/getAccessToken";
 import { handleAuthorization } from "./hooks/handleAuthorization";
 import { handleToken } from "./hooks/handleToken";
 
+import { isUserAuthenticatedData } from "../../model/isUserAuthenticated";
+import { getIsUserAuthenticated } from "../../getters/getIsUserAuthenticated";
+
 export const UserAuthController = {
   state: {
-    set: accessTokenData,
-    get: getAccessToken,
+    setToken: accessTokenData,
+    getToken: getAccessToken,
+    setIsUserAuthenticated: isUserAuthenticatedData,
+    getIsUserAuthenticated: getIsUserAuthenticated,
   },
   hooks: {
     handleToken,

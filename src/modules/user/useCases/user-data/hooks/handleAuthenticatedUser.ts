@@ -2,13 +2,13 @@ import axios from "axios";
 
 const userDataBaseURL = "https://api.spotify.com/v1/me";
 
-interface handleAuthenticatedUserProps {
+interface HandleAuthenticatedUserProps {
   access_token: string;
 }
 
 export const handleAuthenticatedUser = async ({
   access_token,
-}: handleAuthenticatedUserProps) => {
+}: HandleAuthenticatedUserProps) => {
   try {
     const request = await axios.get(userDataBaseURL, {
       headers: {

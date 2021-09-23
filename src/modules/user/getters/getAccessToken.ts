@@ -4,8 +4,8 @@ import { accessTokenData } from "../model/tokenState";
 export const getAccessToken = selector({
   key: "getAccessToken",
   get: ({ get }) => {
-    const token = get(accessTokenData);
+    const access_token = get(accessTokenData);
 
-    return token;
+    return access_token;
   },
 });
