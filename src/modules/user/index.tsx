@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 
 import { AuthSection } from "./useCases/user-auth";
 import { UserAuthController } from "./useCases/user-auth/controller";
 import { oAuthCredentials } from "./shared/oAuthCredentials";
 
+import { UserDataSection } from "./useCases/user-data";
 import { UserDataController } from "./useCases/user-data/controller";
+
 import { UserSection } from "./styles";
 
 export const User = () => {
   const [isUserLogged, setIsUserLogged] = useState(false);
 
   const [authBehavior, setAuthBehavior] = useState("GET_AUTHORIZATION");
-  const { client_id, client_secret, redirect_uri, scopes } = oAuthCredentials;
+  const { grant_type, client_id, client_secret, redirect_uri, scopes } =
+    oAuthCredentials;
+
   const setAccessToken = useSetRecoilState(UserAuthController.state.set);
 
   const setUserData = useSetRecoilState(UserDataController.state.set);
+
+  const getUserData = useRecoilValue(UserDataController.state.get);
 
   const getQueryString = new URLSearchParams(window.location.search);
 
@@ -28,6 +34,7 @@ export const User = () => {
 
       UserAuthController.hooks
         .handleToken({
+          grant_type,
           code: getCode,
           redirect_uri,
           client_id,
@@ -63,7 +70,7 @@ export const User = () => {
         />
       )}
 
-      {isUserLogged && <p>hello</p>}
+      {isUserLogged && <UserDataSection user={getUserData} />}
     </UserSection>
   );
 };

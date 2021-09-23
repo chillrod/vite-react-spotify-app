@@ -5,6 +5,8 @@ export const oAuthCredentials = {
 
   redirect_uri: "http://localhost:3000",
 
+  grant_type: "authorization_code",
+
   scopes: [
     "user-read-playback-state",
     "user-modify-playback-state",

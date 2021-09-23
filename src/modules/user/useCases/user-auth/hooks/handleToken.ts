@@ -4,8 +4,9 @@ const handleTokenBaseURL = "https://accounts.spotify.com/api/token";
 
 interface HandleTokenProps {
   code: string;
+  grant_type: string;
   redirect_uri: string;
-  client_id?: string;
+  client_id?: string | undefined;
   client_secret?: string | true | undefined;
 }
 
@@ -14,18 +15,13 @@ interface HandleTokenProps {
 */
 
 export const handleToken = async ({
+  grant_type,
   code,
   redirect_uri,
   client_id,
   client_secret,
 }: HandleTokenProps) => {
-  const params = {
-    code,
-    grant_type: "authorization_code",
-    redirect_uri,
-    client_id,
-    client_secret,
-  };
+  const params = { grant_type, code, redirect_uri, client_id, client_secret };
 
   const paramsToQueryString = new URLSearchParams(params);
 
