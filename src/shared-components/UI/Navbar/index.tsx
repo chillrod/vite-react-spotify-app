@@ -7,7 +7,7 @@ import { NavBarContainer } from "./styles";
 export const NavBar = () => {
   return (
     <NavBarContainer>
-      <TextComponent text="spotleaf" as="h1" size="md" />
+      <TextComponent text="spotleaf 🍀" as="h1" size="md" />
     </NavBarContainer>
   );
 };

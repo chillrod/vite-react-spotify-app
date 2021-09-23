@@ -11,10 +11,9 @@ import { UserSection } from "./styles";
 
 export const User = () => {
   const [isUserLogged, setIsUserLogged] = useState(false);
+
   const [authBehavior, setAuthBehavior] = useState("GET_AUTHORIZATION");
-
   const { client_id, client_secret, redirect_uri, scopes } = oAuthCredentials;
-
   const setAccessToken = useSetRecoilState(UserAuthController.state.set);
 
   const setUserData = useSetRecoilState(UserDataController.state.set);
@@ -34,7 +33,7 @@ export const User = () => {
           client_id,
           client_secret,
         })
-        .then(async (res) => {
+        .then((res) => {
           setAccessToken(res.access_token);
 
           UserDataController.hooks
