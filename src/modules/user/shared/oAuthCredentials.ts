@@ -10,10 +10,11 @@ export const oAuthCredentials = {
     "user-modify-playback-state",
     "user-read-currently-playing",
     "user-read-playback-position",
-    "user-top-read",
     "user-read-recently-played",
     "user-top-read",
     "streaming",
     "app-remote-control",
+    "user-read-email",
+    "user-read-private",
   ],
 };

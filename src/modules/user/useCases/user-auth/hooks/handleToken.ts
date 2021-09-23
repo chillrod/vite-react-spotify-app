@@ -30,18 +30,20 @@ export const handleToken = async ({
   const paramsToQueryString = new URLSearchParams(params);
 
   try {
-    await axios
-      .post(handleTokenBaseURL, paramsToQueryString.toString(), {
+    const request = await axios.post(
+      handleTokenBaseURL,
+      paramsToQueryString.toString(),
+      {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      })
-      .then((res) => {
-        const { data } = res;
+      }
+    );
 
-        localStorage.setItem("access_token", data.access_token);
-      });
-  } catch (err) {
-    console.log(err);
+    const { access_token } = request.data;
+
+    return { access_token };
+  } catch (err: any) {
+    throw new Error(err);
   }
 };

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+
+import { useSetRecoilState } from "recoil";
 
 import { AuthSection } from "./useCases/user-auth";
+import { UserAuthController } from "./useCases/user-auth/controller";
 import { oAuthCredentials } from "./shared/oAuthCredentials";
-import { handleToken } from "./useCases/user-auth/hooks/handleToken";
 
-import { accessTokenData } from "./model/tokenState";
-import { getAccessToken } from "./getters/getToken";
-
+import { UserDataController } from "./useCases/user-data/controller";
 import { UserSection } from "./styles";
 
 export const User = () => {
@@ -16,32 +15,43 @@ export const User = () => {
 
   const { client_id, client_secret, redirect_uri, scopes } = oAuthCredentials;
 
-  const setToken = useSetRecoilState(accessTokenData);
+  const setAccessToken = useSetRecoilState(UserAuthController.state.set);
 
-  const token = useRecoilValue(getAccessToken);
+  const setUserData = useSetRecoilState(UserDataController.state.set);
+
+  const getQueryString = new URLSearchParams(window.location.search);
+
+  const getCode = getQueryString.get("code");
 
   useEffect(() => {
-    const getQueryString = new URLSearchParams(window.location.search);
-
-    const getCode = getQueryString.get("code");
-    const getAccessToken = localStorage.getItem("access_token");
-
-    if (!getCode?.length) return;
-
-    if (getAccessToken?.length) {
-      setToken(getAccessToken);
-    }
-
-    if (!token) {
+    if (getCode?.length) {
       setAuthBehavior("GET_TOKEN");
-      handleToken({
-        code: getCode,
-        redirect_uri: "http://localhost:3000",
-        client_id,
-        client_secret,
-      });
+
+      UserAuthController.hooks
+        .handleToken({
+          code: getCode,
+          redirect_uri,
+          client_id,
+          client_secret,
+        })
+        .then(async (res) => {
+          setAccessToken(res.access_token);
+
+          UserDataController.hooks
+            .handleAuthenticatedUser(res)
+            .then((userResponse) => {
+              if (userResponse) {
+                setUserData({ ...userResponse });
+
+                setIsUserLogged(true);
+              }
+            });
+        });
+
+      getQueryString.delete("code");
+      history.replaceState(null, "", "?" + getQueryString + location.hash);
     }
-  }, [token]);
+  }, []);
 
   return (
     <UserSection>
@@ -53,6 +63,8 @@ export const User = () => {
           scopes={scopes}
         />
       )}
+
+      {isUserLogged && <p>hello</p>}
     </UserSection>
   );
 };

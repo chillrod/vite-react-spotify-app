@@ -30,7 +30,7 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
           <AuthContainer>
             <ButtonComponent
               onClick={() =>
-                handleAuthorization({ event, client_id, redirect_uri, scopes })
+                handleAuthorization({ client_id, redirect_uri, scopes })
               }
               text="Login"
               color="teal"
