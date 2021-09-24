@@ -4,7 +4,7 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 
 import { AuthSection } from "./useCases/user-auth";
 import { UserAuthController } from "./useCases/user-auth/controller";
-import { oAuthCredentials } from "./shared/oAuthCredentials";
+import { oAuthCredentials } from "../../config/auth/oAuthCredentials";
 
 import { UserDataSection } from "./useCases/user-data";
 import { UserDataController } from "./useCases/user-data/controller";
