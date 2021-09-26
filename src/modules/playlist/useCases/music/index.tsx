@@ -45,9 +45,11 @@ export const MusicSection = ({ items }: MusicSectionProps) => {
               <MusicCardData>
                 <TextComponent text={musicTrack.name} as="h2" size="md" />
                 <TextComponent
-                  text={returnArtist(
-                    returnIndexOfArray(musicTrack.album?.artists, 0)
-                  )}
+                  text={
+                    returnArtist(
+                      returnIndexOfArray(musicTrack.album?.artists, 0)
+                    ) || "Loading"
+                  }
                   as="p"
                   size="sm"
                 />
