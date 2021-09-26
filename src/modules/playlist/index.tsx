@@ -44,16 +44,18 @@ export const Playlist = () => {
   );
 
   const handleRecommendations = useCallback(() => {
-    const getRecommendations = MusicController.hooks
-      .recommendedMusics({
-        access_token: accessToken,
-        type: "tracks",
-      })
-      .then((res) => {
-        setMusic(res?.items);
-      });
+    if (!getMusic.length) {
+      const getRecommendations = MusicController.hooks
+        .recommendedMusics({
+          access_token: accessToken,
+          type: "tracks",
+        })
+        .then((res) => {
+          setMusic(res?.items);
+        });
 
-    return getRecommendations;
+      return getRecommendations;
+    }
   }, [getMusic?.length]);
 
   useEffect(() => {
