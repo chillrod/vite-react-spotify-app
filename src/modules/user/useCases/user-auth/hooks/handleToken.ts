@@ -16,10 +16,6 @@ interface TokenRequest {
   };
 }
 
-/* TO-DO
-[ ] - Change client_id, client_secret to Base64 Header
-*/
-
 export const handleToken = async ({
   grant_type,
   code,

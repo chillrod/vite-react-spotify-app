@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 export const UserContainer = styled.section`
-  padding: 0.8em;
-
-  background: var(--chakra-colors-gray-700);
+  padding: 1em;
+  background: var(--chakra-colors-blue-800);
   border-radius: 10px;
 
   display: flex;

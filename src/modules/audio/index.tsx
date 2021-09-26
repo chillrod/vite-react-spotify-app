@@ -10,9 +10,9 @@ import { MusicSection } from "./useCases/music";
 import { InputComponent } from "../../shared-components/UI/Input";
 import { TextComponent } from "../../shared-components/UI/Text";
 
-import { PlaylistSection, PlaylistSearchSection } from "./styles";
+import { AudioSection, AudioSearchSection } from "./styles";
 
-export const Playlist = () => {
+export const Audio = () => {
   const isUserAuthenticated = useRecoilValue(
     UserAuthController.state.getIsUserAuthenticated
   );
@@ -37,7 +37,14 @@ export const Playlist = () => {
       }
 
       if (!event.target.value.length) {
-        setMusic([]);
+        MusicController.hooks
+          .recommendedMusics({
+            access_token: accessToken,
+            type: "tracks",
+          })
+          .then((res) => {
+            setMusic(res?.items);
+          });
       }
     },
     [accessToken]
@@ -65,26 +72,23 @@ export const Playlist = () => {
   return (
     <>
       {isUserAuthenticated && (
-        <PlaylistSection>
-          <TextComponent
-            text="Hello, here's our recommendations"
-            as="h3"
-            size="xl"
-          />
-          <PlaylistSearchSection>
+        <AudioSection>
+          <AudioSearchSection>
+            <TextComponent text="Ready to play some music?" as="h4" size="xl" />
             <TextComponent
-              text="Or you can search your favorites"
-              as="p"
-              size="sm"
+              text="Look at our recommendation based on your top picks or search your favorites"
+              as="h4"
+              isText
             />
             <InputComponent
+              search
               placeholder="Search"
               onChange={handleSearchQuery}
               variant="filled"
             />
-          </PlaylistSearchSection>
+          </AudioSearchSection>
           {getMusic.length && <MusicSection items={getMusic} />}
-        </PlaylistSection>
+        </AudioSection>
       )}
     </>
   );
