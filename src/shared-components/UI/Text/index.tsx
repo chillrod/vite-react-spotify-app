@@ -3,7 +3,7 @@ import React from "react";
 import { Heading } from "@chakra-ui/react";
 
 interface TextComponentProps {
-  text: string;
+  text?: string;
   as?: any;
   size?: any;
 }

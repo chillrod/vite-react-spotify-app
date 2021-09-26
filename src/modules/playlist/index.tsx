@@ -1,59 +1,87 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { UserAuthController } from "../user/useCases/user-auth/controller";
-import { SearchController } from "./useCases/search/controller";
+import { MusicController } from "./useCases/music/controller";
 
-import { SearchSection } from "./useCases/search";
+import { MusicSection } from "./useCases/music";
 
 import { InputComponent } from "../../shared-components/UI/Input";
-import { PlaylistSection } from "./styles";
+import { TextComponent } from "../../shared-components/UI/Text";
+
+import { PlaylistSection, PlaylistSearchSection } from "./styles";
 
 export const Playlist = () => {
   const isUserAuthenticated = useRecoilValue(
     UserAuthController.state.getIsUserAuthenticated
   );
 
-  const setSearchedMusic = useSetRecoilState(
-    SearchController.state.setSearchedMusic
-  );
+  const setMusic = useSetRecoilState(MusicController.state.setMusic);
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
 
-  const getSearchedMusic = useRecoilValue(
-    SearchController.state.getSearchedMusic
-  );
+  const getMusic = useRecoilValue(MusicController.state.getMusic);
 
   const handleSearchQuery = useCallback(
     (event) => {
       if (event.target.value.length) {
-        SearchController.hooks
+        MusicController.hooks
           .searchMusic({
             access_token: accessToken,
             query: event.target.value,
             type: "track",
           })
           .then((res) => {
-            setSearchedMusic(res?.tracks?.items);
+            setMusic(res?.tracks?.items);
           });
       }
 
       if (!event.target.value.length) {
-        setSearchedMusic([]);
+        setMusic([]);
       }
     },
     [accessToken]
   );
 
+  const handleRecommendations = useCallback(() => {
+    const getRecommendations = MusicController.hooks
+      .recommendedMusics({
+        access_token: accessToken,
+        type: "tracks",
+      })
+      .then((res) => {
+        setMusic(res?.items);
+      });
+
+    return getRecommendations;
+  }, [getMusic?.length]);
+
+  useEffect(() => {
+    handleRecommendations();
+  }, [getMusic?.length]);
+
   return (
     <>
       {isUserAuthenticated && (
         <PlaylistSection>
-          <InputComponent
-            placeholder="search your favorite song"
-            onChange={handleSearchQuery}
+          <TextComponent
+            text="Hello, here's our recommendations"
+            as="h3"
+            size="xl"
           />
-          {getSearchedMusic && <SearchSection items={getSearchedMusic} />}
+          <PlaylistSearchSection>
+            <TextComponent
+              text="Or you can search your favorites"
+              as="p"
+              size="sm"
+            />
+            <InputComponent
+              placeholder="Search"
+              onChange={handleSearchQuery}
+              variant="filled"
+            />
+          </PlaylistSearchSection>
+          {getMusic && <MusicSection items={getMusic} />}
         </PlaylistSection>
       )}
     </>
