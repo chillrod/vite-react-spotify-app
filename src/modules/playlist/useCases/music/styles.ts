@@ -17,7 +17,12 @@ export const MusicCard = styled.li`
   margin-bottom: 1em;
   margin-left: 1em;
 
-  background: var(--chakra-colors-gray-700);
+  background: var(--chakra-colors-gray-600);
+  transition: 250ms ease-in-out;
+
+  &:hover {
+    background: var(--chakra-colors-gray-700);
+  }
 
   display: grid;
   grid-template-columns: 40% 60%;
