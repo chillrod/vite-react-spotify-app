@@ -72,15 +72,21 @@ export const Audio = () => {
     }
   }, [isUserAuthenticated]);
 
-  const handleSelectedMusic = (musicTrack: { uri?: string; name?: string }) => {
+  const handleSelectedMusic = (musicTrack: {
+    uri?: string;
+    name?: string;
+    image?: string;
+  }) => {
     setSelectedMusic({
       uri: musicTrack.uri,
       name: musicTrack.name,
+      image: musicTrack.image,
     });
   };
 
   useEffect(() => {
     handleRecommendations();
+    console.log({ getSelectedMusic });
   }, [isUserAuthenticated, getMusic.length, getSelectedMusic]);
 
   return (
