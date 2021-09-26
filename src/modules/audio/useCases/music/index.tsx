@@ -27,14 +27,18 @@ interface MusicSectionProps {
       };
     };
   }[];
+  selectedTrack: (musicTrack: { uri?: string; name?: string }) => void;
 }
 
-export const MusicSection = ({ items }: MusicSectionProps) => {
+export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
   return (
     <MusicList>
       {items.length &&
         items.map((musicTrack) => (
-          <MusicCard key={musicTrack.uri}>
+          <MusicCard
+            key={musicTrack.uri}
+            onClick={() => selectedTrack(musicTrack)}
+          >
             <>
               <img
                 src={returnImageUrl(

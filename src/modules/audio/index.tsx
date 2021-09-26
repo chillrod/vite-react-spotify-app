@@ -13,14 +13,21 @@ import { TextComponent } from "../../shared-components/UI/Text";
 import { AudioSection, AudioSearchSection } from "./styles";
 
 export const Audio = () => {
+  const accessToken = useRecoilValue(UserAuthController.state.getToken);
+
   const isUserAuthenticated = useRecoilValue(
     UserAuthController.state.getIsUserAuthenticated
   );
 
   const setMusic = useSetRecoilState(MusicController.state.setMusic);
-  const accessToken = useRecoilValue(UserAuthController.state.getToken);
-
   const getMusic = useRecoilValue(MusicController.state.getMusic);
+
+  const setSelectedMusic = useSetRecoilState(
+    MusicController.state.setSelectedMusic
+  );
+  const getSelectedMusic = useRecoilValue(
+    MusicController.state.getSelectedMusic
+  );
 
   const handleSearchQuery = useCallback(
     (event) => {
@@ -65,9 +72,16 @@ export const Audio = () => {
     }
   }, [isUserAuthenticated]);
 
+  const handleSelectedMusic = (musicTrack: { uri?: string; name?: string }) => {
+    setSelectedMusic({
+      uri: musicTrack.uri,
+      name: musicTrack.name,
+    });
+  };
+
   useEffect(() => {
     handleRecommendations();
-  }, [isUserAuthenticated, getMusic.length]);
+  }, [isUserAuthenticated, getMusic.length, getSelectedMusic]);
 
   return (
     <>
@@ -87,7 +101,12 @@ export const Audio = () => {
               variant="filled"
             />
           </AudioSearchSection>
-          {getMusic.length && <MusicSection items={getMusic} />}
+          {getMusic.length && (
+            <MusicSection
+              items={getMusic}
+              selectedTrack={handleSelectedMusic}
+            />
+          )}
         </AudioSection>
       )}
     </>

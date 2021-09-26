@@ -8,6 +8,8 @@ export const MusicList = styled.ul`
 `;
 
 export const MusicCard = styled.li`
+  cursor: pointer;
+
   min-width: 70vw;
   height: 100%;
 
