@@ -5,5 +5,5 @@ export const PlaylistSection = styled.section`
 `;
 
 export const PlaylistSearchSection = styled.div`
-  margin: 2em 0;
+  margin: 1.8em 0;
 `;

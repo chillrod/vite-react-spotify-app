@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const UserContainer = styled.section`
-  margin: 1em 0;
-  padding: 1.8em;
+  padding: 0.8em;
 
   background: var(--chakra-colors-gray-700);
   border-radius: 10px;
