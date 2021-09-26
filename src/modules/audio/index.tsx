@@ -12,7 +12,6 @@ import { InputComponent } from "../../shared-components/UI/Input";
 import { TextComponent } from "../../shared-components/UI/Text";
 
 import { AudioSection, AudioSearchSection } from "./styles";
-import { getAccessToken } from "../user/getters/getAccessToken";
 
 export const Audio = () => {
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
@@ -44,12 +43,16 @@ export const Audio = () => {
             setMusic(res?.tracks?.items);
           });
       }
+
+      if (!event.target.value.length) {
+        handleRecommendations();
+      }
     },
-    [accessToken]
+    [accessToken, getMusic.length]
   );
 
   const handleRecommendations = useCallback(() => {
-    if (isUserAuthenticated && !getMusic.length) {
+    if (isUserAuthenticated) {
       const getRecommendations = MusicController.hooks
         .recommendedMusics({
           access_token: accessToken,
@@ -77,7 +80,7 @@ export const Audio = () => {
 
   useEffect(() => {
     handleRecommendations();
-  }, [isUserAuthenticated, getMusic.length, getSelectedMusic]);
+  }, [isUserAuthenticated]);
 
   return (
     <>
