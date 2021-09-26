@@ -1,6 +1,9 @@
 import React from "react";
+
 import { returnImageUrl } from "../../../../helpers/imageUrl";
 import { returnIndexOfArray } from "../../../../helpers/returnIndex";
+import { returnArtist } from "../../../../helpers/returnArtist";
+
 import { TextComponent } from "../../../../shared-components/UI/Text";
 
 import { MusicCard, MusicCardData, MusicList } from "./styles";
@@ -29,7 +32,7 @@ interface MusicSectionProps {
 export const MusicSection = ({ items }: MusicSectionProps) => {
   return (
     <MusicList>
-      {items &&
+      {items.length &&
         items.map((musicTrack) => (
           <MusicCard key={musicTrack.uri}>
             <>
@@ -42,7 +45,9 @@ export const MusicSection = ({ items }: MusicSectionProps) => {
               <MusicCardData>
                 <TextComponent text={musicTrack.name} as="h2" size="md" />
                 <TextComponent
-                  text={returnIndexOfArray(musicTrack.album?.artists, 0).name}
+                  text={returnArtist(
+                    returnIndexOfArray(musicTrack.album?.artists, 0)
+                  )}
                   as="p"
                   size="sm"
                 />

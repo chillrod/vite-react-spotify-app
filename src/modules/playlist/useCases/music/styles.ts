@@ -9,7 +9,7 @@ export const MusicList = styled.ul`
 
 export const MusicCard = styled.li`
   min-width: 70vw;
-  min-height: 100px;
+  height: 100%;
 
   list-style: none;
   border-radius: 8px;
@@ -34,6 +34,6 @@ export const MusicCardData = styled.div`
   margin-left: 1em;
   padding: 1em 0;
 
-  display: grid;
-  grid-template-rows: 0.3fr;
+  display: flex;
+  flex-direction: column;
 `;

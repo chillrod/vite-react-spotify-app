@@ -44,7 +44,7 @@ export const Playlist = () => {
   );
 
   const handleRecommendations = useCallback(() => {
-    if (!getMusic.length) {
+    if (isUserAuthenticated) {
       const getRecommendations = MusicController.hooks
         .recommendedMusics({
           access_token: accessToken,
@@ -56,11 +56,11 @@ export const Playlist = () => {
 
       return getRecommendations;
     }
-  }, [getMusic?.length]);
+  }, [isUserAuthenticated]);
 
   useEffect(() => {
     handleRecommendations();
-  }, [getMusic?.length]);
+  }, [isUserAuthenticated]);
 
   return (
     <>
@@ -83,7 +83,7 @@ export const Playlist = () => {
               variant="filled"
             />
           </PlaylistSearchSection>
-          {getMusic && <MusicSection items={getMusic} />}
+          {getMusic.length && <MusicSection items={getMusic} />}
         </PlaylistSection>
       )}
     </>
