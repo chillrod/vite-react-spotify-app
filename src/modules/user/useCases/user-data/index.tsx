@@ -12,7 +12,7 @@ interface UserSectionProps {
   user: {
     email?: string;
     display_name?: string;
-    images: {
+    images?: {
       url: string;
     };
   };

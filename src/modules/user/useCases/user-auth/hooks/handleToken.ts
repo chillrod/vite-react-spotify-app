@@ -27,20 +27,20 @@ export const handleToken = async ({
   client_id,
   client_secret,
 }: HandleTokenProps) => {
-  const params = { grant_type, code, redirect_uri, client_id, client_secret };
-
-  const paramsToQueryString = new URLSearchParams(params);
+  const clientCredentials = btoa(`${client_id}:${client_secret}`);
 
   try {
-    const request: TokenRequest = await axios.post(
-      handleTokenBaseURL,
-      paramsToQueryString.toString(),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
+    const request: TokenRequest = await axios.post(handleTokenBaseURL, "", {
+      params: {
+        grant_type: grant_type,
+        code: code,
+        redirect_uri: redirect_uri,
+      },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Basic ${clientCredentials}`,
+      },
+    });
 
     const { access_token } = request.data;
 
