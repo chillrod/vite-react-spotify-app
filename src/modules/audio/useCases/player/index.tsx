@@ -3,17 +3,21 @@ import React, { useCallback } from "react";
 import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 
 import { CurrentSong } from "./components/currentSong";
-import { ConnectDevice } from "./components/connectDevice";
+import { PlayTrack } from "./components/playTrack";
 import { SpotifyPlayer } from "./components/player";
+import { SetterOrUpdater } from "recoil";
+import { PlayerGUI } from "./styles";
 
 interface PlayerSectionProps {
+  showControls: boolean;
+  playTrack: SetterOrUpdater<boolean>;
   getAccessToken?: any;
-  selectedTrack?: {};
 }
 
 export const PlayerSection = ({
+  showControls,
+  playTrack,
   getAccessToken,
-  selectedTrack,
 }: PlayerSectionProps) => {
   const getOAuthToken = useCallback((callback) => callback(getAccessToken), []);
 
@@ -22,12 +26,11 @@ export const PlayerSection = ({
       deviceName="Spotleaf web player 🍀"
       getOAuthToken={getOAuthToken}
     >
-      <CurrentSong />
-      <ConnectDevice
-        selectedTrack={selectedTrack}
-        getAccessToken={getAccessToken}
-      />
-      <SpotifyPlayer />
+      <PlayerGUI>
+        <CurrentSong />
+        <PlayTrack playTrack={playTrack} />
+        {showControls && <SpotifyPlayer />}
+      </PlayerGUI>
     </WebPlaybackSDK>
   );
 };

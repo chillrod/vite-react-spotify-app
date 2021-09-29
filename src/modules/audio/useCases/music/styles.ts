@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export const MusicList = styled.ul`
   display: flex;
@@ -7,7 +8,7 @@ export const MusicList = styled.ul`
   border-radius: 8px;
 `;
 
-export const MusicCard = styled.li`
+export const MusicCard = styled(motion.li)`
   cursor: pointer;
 
   min-width: 70vw;
@@ -29,9 +30,17 @@ export const MusicCard = styled.li`
   display: grid;
   grid-template-columns: 40% 60%;
 
+  @media (min-width: 800px) {
+    min-width: 30ch;
+    height: 15ch;
+
+    grid-template-columns: 50% 50%;
+  }
+
   img {
     object-fit: cover;
     width: 100%;
+    height: 100%;
     border-radius: 8px;
   }
 `;

@@ -4,6 +4,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { UserAuthController } from "../user/useCases/user-auth/controller";
 import { MusicController } from "./useCases/music/controller";
+import { PlayerController } from "./useCases/player/controller";
 
 import { MusicSection } from "./useCases/music";
 import { PlayerSection } from "./useCases/player";
@@ -23,9 +24,18 @@ export const Audio = () => {
   const setMusic = useSetRecoilState(MusicController.state.setMusic);
   const getMusic = useRecoilValue(MusicController.state.getMusic);
 
+  const setFirstPlayTrack = useSetRecoilState(
+    PlayerController.state.setFirstPlay
+  );
+
+  const getIsFirstPlayTrack = useRecoilValue(
+    PlayerController.state.getIsFirstPlay
+  );
+
   const setSelectedMusic = useSetRecoilState(
     MusicController.state.setSelectedMusic
   );
+
   const getSelectedMusic = useRecoilValue(
     MusicController.state.getSelectedMusic
   );
@@ -52,6 +62,7 @@ export const Audio = () => {
   );
 
   const handleRecommendations = useCallback(() => {
+    // TODO Fix api call if user refreshs screen ( needs to verify if recommendations length already exists)
     if (isUserAuthenticated) {
       const getRecommendations = MusicController.hooks
         .recommendedMusics({
@@ -78,6 +89,25 @@ export const Audio = () => {
     });
   };
 
+  const handlePlayTrack = useCallback(
+    ({ device }) => {
+      const playTrack = PlayerController.hooks
+        .playTrack({
+          device,
+          access_token: accessToken,
+          getSelectedMusic,
+        })
+        .then(() => {
+          if (!getIsFirstPlayTrack) {
+            setFirstPlayTrack(true);
+          }
+        });
+
+      return playTrack;
+    },
+    [getSelectedMusic]
+  );
+
   useEffect(() => {
     handleRecommendations();
   }, [isUserAuthenticated]);
@@ -88,11 +118,6 @@ export const Audio = () => {
         <AudioSection>
           <AudioSearchSection>
             <TextComponent text="Ready to play some music?" as="h4" size="xl" />
-            <TextComponent
-              text="Look at our recommendation based on your top picks or search your favorites"
-              as="h4"
-              isText
-            />
             <InputComponent
               search
               placeholder="Search"
@@ -107,8 +132,9 @@ export const Audio = () => {
             />
           )}
           <PlayerSection
+            showControls={getIsFirstPlayTrack}
+            playTrack={handlePlayTrack}
             getAccessToken={accessToken}
-            selectedTrack={getSelectedMusic}
           />
         </AudioSection>
       )}

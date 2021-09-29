@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button } from "@chakra-ui/react";
-import { TriangleUpIcon } from "@chakra-ui/icons";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 interface ButtonProps {
   text: string;
@@ -23,7 +23,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   return (
     <>
       <Button
-        rightIcon={play ? <TriangleUpIcon /> : <></>}
+        rightIcon={play ? <ChevronRightIcon /> : <></>}
         type={isSubmit ? "submit" : "button"}
         isLoading={isLoading}
         colorScheme={color}
