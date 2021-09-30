@@ -29,7 +29,7 @@ export const UserDataSection: React.FC<UserSectionProps> = ({ user }) => {
       >
         <Avatar src={returnImageUrl(returnIndexOfArray(user.images, 0))} />
         <TextComponent
-          text={`You're logged in as ${user.display_name}`}
+          text={`You're logged as ${user.display_name}`}
           as="p"
           size="sm"
         />

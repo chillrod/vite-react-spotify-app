@@ -40,11 +40,12 @@ export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
       {items.length &&
         items.map((musicTrack) => (
           <MusicCard
+            initial={false}
+            whileTap={{ scale: 1.05 }}
             drag="y"
-            layout
             dragElastic={1}
             onDragStart={() => console.log({ music: musicTrack.name })}
-            dragConstraints={{ top: 10, bottom: 50 }}
+            dragConstraints={{ top: 10, bottom: 30 }}
             key={musicTrack.uri}
             onClick={() =>
               selectedTrack({

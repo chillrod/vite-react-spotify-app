@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 export const MusicList = styled.ul`
   display: flex;
+  padding: 1em;
 
   overflow-y: auto;
   border-radius: 8px;
@@ -34,7 +35,7 @@ export const MusicCard = styled(motion.li)`
     min-width: 30ch;
     height: 15ch;
 
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
   }
 
   img {
@@ -46,7 +47,6 @@ export const MusicCard = styled(motion.li)`
 `;
 
 export const MusicCardData = styled.div`
-  justify-self: start;
   margin-left: 1em;
   padding: 1em 0;
 
