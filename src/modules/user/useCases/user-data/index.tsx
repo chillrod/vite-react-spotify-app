@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Avatar } from "@chakra-ui/react";
 
@@ -7,6 +7,8 @@ import { returnIndexOfArray } from "../../../../helpers/returnIndex";
 
 import { UserContainer } from "./styles";
 import { TextComponent } from "../../../../shared-components/UI/Text";
+
+import { AnimatePresence } from "framer-motion";
 
 interface UserSectionProps {
   user: {
@@ -20,13 +22,18 @@ interface UserSectionProps {
 
 export const UserDataSection: React.FC<UserSectionProps> = ({ user }) => {
   return (
-    <UserContainer>
-      <Avatar src={returnImageUrl(returnIndexOfArray(user.images, 0))} />
-      <TextComponent
-        text={`You're logged in as ${user.display_name}`}
-        as="p"
-        size="sm"
-      />
-    </UserContainer>
+    <>
+      <UserContainer
+        initial={{ opacity: 0, y: -1 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Avatar src={returnImageUrl(returnIndexOfArray(user.images, 0))} />
+        <TextComponent
+          text={`You're logged in as ${user.display_name}`}
+          as="p"
+          size="sm"
+        />
+      </UserContainer>
+    </>
   );
 };

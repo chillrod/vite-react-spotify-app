@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
+import { Play } from "react-feather";
 
 interface ButtonProps {
   text: string;
@@ -23,7 +23,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   return (
     <>
       <Button
-        rightIcon={play ? <ChevronRightIcon /> : <></>}
+        rightIcon={play ? <Play /> : <></>}
         type={isSubmit ? "submit" : "button"}
         isLoading={isLoading}
         colorScheme={color}

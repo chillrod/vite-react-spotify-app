@@ -48,8 +48,8 @@ export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
             key={musicTrack.uri}
             onClick={() =>
               selectedTrack({
-                uri: musicTrack.uri,
-                name: musicTrack.name,
+                uri: musicTrack?.uri,
+                name: musicTrack?.name,
                 image: returnImageUrl(
                   returnIndexOfArray(musicTrack.album?.images, 1)
                 ),

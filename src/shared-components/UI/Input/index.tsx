@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { Search } from "react-feather";
 
 interface InputComponentProps {
   placeholder: string;
@@ -21,9 +21,7 @@ export const InputComponent = ({
   return (
     <>
       <InputGroup mt="5">
-        {search && (
-          <InputLeftElement color="gray.200" children={<SearchIcon />} />
-        )}
+        {search && <InputLeftElement color="gray.200" children={<Search />} />}
         <Input
           placeholder={placeholder}
           value={value}

@@ -83,9 +83,9 @@ export const Audio = () => {
     image?: string;
   }) => {
     setSelectedMusic({
-      uri: musicTrack.uri,
-      name: musicTrack.name,
-      image: musicTrack.image,
+      uri: musicTrack?.uri,
+      name: musicTrack?.name,
+      image: musicTrack?.image,
     });
   };
 

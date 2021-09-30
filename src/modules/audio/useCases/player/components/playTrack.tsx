@@ -7,6 +7,7 @@ export const PlayTrack = ({ playTrack }: any) => {
 
   const playMusic = () => {
     if (device === null) return;
+
     playTrack({ device });
   };
 

@@ -7,6 +7,7 @@ import { PlayTrack } from "./components/playTrack";
 import { SpotifyPlayer } from "./components/player";
 import { SetterOrUpdater } from "recoil";
 import { PlayerGUI } from "./styles";
+import { PlayerDeck } from "./components/playerDeck";
 
 interface PlayerSectionProps {
   showControls: boolean;
@@ -22,15 +23,18 @@ export const PlayerSection = ({
   const getOAuthToken = useCallback((callback) => callback(getAccessToken), []);
 
   return (
-    <WebPlaybackSDK
-      deviceName="Spotleaf web player 🍀"
-      getOAuthToken={getOAuthToken}
-    >
-      <PlayerGUI>
-        <CurrentSong />
-        <PlayTrack playTrack={playTrack} />
-        {showControls && <SpotifyPlayer />}
-      </PlayerGUI>
-    </WebPlaybackSDK>
+    <>
+      <WebPlaybackSDK
+        deviceName="Spotleaf web player 🍀"
+        getOAuthToken={getOAuthToken}
+      >
+        <PlayerGUI>
+          <CurrentSong />
+          <PlayTrack playTrack={playTrack} />
+          {showControls && <SpotifyPlayer />}
+        </PlayerGUI>
+      </WebPlaybackSDK>
+      <PlayerDeck />
+    </>
   );
 };

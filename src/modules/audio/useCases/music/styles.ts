@@ -18,7 +18,7 @@ export const MusicCard = styled(motion.li)`
   border-radius: 8px;
 
   margin-bottom: 1em;
-  margin-left: 1em;
+  margin-right: 1.2em;
 
   background: var(--chakra-colors-gray-600);
   transition: 250ms ease-in-out;

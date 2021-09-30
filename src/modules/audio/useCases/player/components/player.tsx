@@ -1,23 +1,31 @@
-import React from "react";
-import { useSpotifyPlayer } from "react-spotify-web-playback-sdk";
+import React, { useState } from "react";
+
+import {
+  useSpotifyPlayer,
+  SpotifyPlayer as SpotifyPlayerType,
+} from "react-spotify-web-playback-sdk";
+import { parseTogglePlay } from "../../../../../helpers/parseTogglePlay";
 
 import { ButtonComponent } from "../../../../../shared-components/UI/Button";
 
 export const SpotifyPlayer = (): any => {
+  const [togglePlay, setTogglePlay] = useState(true);
+
   const player = useSpotifyPlayer();
+
+  const togglePlayer = (playerInstance: SpotifyPlayerType) => {
+    playerInstance.togglePlay();
+
+    setTogglePlay(!togglePlay);
+  };
 
   if (player === null) return null;
 
   return (
     <>
       <ButtonComponent
-        onClick={() => player.pause()}
-        text="Pause"
-        color="teal"
-      />
-      <ButtonComponent
-        onClick={() => player.resume()}
-        text="Resume"
+        onClick={() => togglePlayer(player)}
+        text={parseTogglePlay(togglePlay)}
         color="teal"
       />
     </>
