@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 export const UserContainer = styled(motion.section)`
-  padding: 1em;
-  background: var(--chakra-colors-blue-800);
+  padding: 0.5em;
+  background: var(--chakra-colors-gray-900);
   border-radius: 10px;
 
   display: flex;

@@ -20,10 +20,10 @@ interface MusicSectionProps {
         name?: string;
       };
 
-      images?: {
+      images: {
         url?: string;
-        height?: number;
-        width?: number;
+        height: number;
+        width: number;
       };
     };
   }[];
@@ -34,6 +34,22 @@ interface MusicSectionProps {
   }) => void;
 }
 
+const dragTransitionVariants = {
+  power: 0.1,
+  min: 0,
+  max: 0,
+  restDelta: 5000,
+};
+
+const motionTransition = {
+  duration: 0.001,
+};
+
+const dragConstraints = {
+  top: 0,
+  bottom: 0,
+};
+
 export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
   return (
     <MusicList>
@@ -41,11 +57,11 @@ export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
         items.map((musicTrack) => (
           <MusicCard
             initial={false}
-            whileTap={{ scale: 1.05 }}
-            drag="y"
-            dragElastic={1}
-            onDragStart={() => console.log({ music: musicTrack.name })}
-            dragConstraints={{ top: 10, bottom: 30 }}
+            whileTap={{ scale: 1.1 }}
+            drag
+            transition={motionTransition}
+            dragTransition={dragTransitionVariants}
+            dragConstraints={dragConstraints}
             key={musicTrack.uri}
             onClick={() =>
               selectedTrack({

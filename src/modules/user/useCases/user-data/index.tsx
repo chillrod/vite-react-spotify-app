@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { Avatar } from "@chakra-ui/react";
 
@@ -7,8 +7,6 @@ import { returnIndexOfArray } from "../../../../helpers/returnIndex";
 
 import { UserContainer } from "./styles";
 import { TextComponent } from "../../../../shared-components/UI/Text";
-
-import { AnimatePresence } from "framer-motion";
 
 interface UserSectionProps {
   user: {
