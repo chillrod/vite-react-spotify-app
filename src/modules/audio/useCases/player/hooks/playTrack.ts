@@ -5,11 +5,6 @@ export const playTrack = async ({
   access_token,
   filterActives,
 }: any) => {
-  console.log(
-    "🚀 ~ file: playTrack.ts ~ line 8 ~ getSelectedMusic",
-    filterActives
-  );
-
   const { uri } = filterActives;
 
   try {

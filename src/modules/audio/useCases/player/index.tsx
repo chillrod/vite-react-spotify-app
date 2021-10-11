@@ -11,7 +11,7 @@ import { PlayerGUI } from "./styles";
 interface PlayerSectionProps {
   playTrack: SetterOrUpdater<boolean>;
   getAccessToken?: any;
-  isPlaying: SetterOrUpdater<boolean>;
+  isPlaying: [boolean, SetterOrUpdater<boolean>];
   queueChanged: {}[];
 }
 
@@ -19,17 +19,17 @@ export const PlayerSection = ({
   playTrack,
   getAccessToken,
   queueChanged,
-  isPlaying,
+  isPlaying: [getIsPlaying, setIsPlaying],
 }: PlayerSectionProps) => {
   return (
     <>
       <PlayerSdk getAccessToken={getAccessToken}>
         <PlayerGUI>
-          <SpotifyPlayer isPlaying={isPlaying} />
+          <SpotifyPlayer isPlaying={[getIsPlaying, setIsPlaying]} />
           <PlayTrack
             playTrack={playTrack}
             queueChanged={queueChanged}
-            isPlaying={isPlaying}
+            isPlaying={[getIsPlaying, setIsPlaying]}
           />
           <PlayerState />
         </PlayerGUI>

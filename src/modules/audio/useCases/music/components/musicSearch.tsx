@@ -15,6 +15,8 @@ export const MusicSearch = ({ accessToken }: any) => {
     MusicController.state.setSearchedMusic
   );
 
+  const setIsSerching = useSetRecoilState(MusicController.state.setIsSerching);
+
   const getSearchedMusic = useRecoilValue(
     MusicController.state.getSearchedMusic
   );
@@ -22,6 +24,8 @@ export const MusicSearch = ({ accessToken }: any) => {
   const handleSearchQuery = useCallback(
     (event) => {
       if (event.target.value.length) {
+        setIsSerching(true);
+
         MusicController.hooks
           .searchMusic({
             access_token: accessToken,
@@ -31,6 +35,10 @@ export const MusicSearch = ({ accessToken }: any) => {
           .then((res) => {
             setSearchedMusic(res?.tracks?.items);
           });
+      }
+
+      if (!event.target.value.length) {
+        setIsSerching(false);
       }
     },
     [accessToken, getSearchedMusic.length]

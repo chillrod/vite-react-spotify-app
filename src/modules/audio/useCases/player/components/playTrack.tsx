@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 
 import { usePlayerDevice } from "react-spotify-web-playback-sdk";
+import { SetterOrUpdater } from "recoil";
 
 interface PlayTrackProps {
   playTrack?: any;
-  isPlaying: any;
+  isPlaying: [boolean, SetterOrUpdater<boolean>];
   queueChanged: {}[];
   children?: JSX.Element;
 }
 
 export const PlayTrack = ({
   playTrack,
-  isPlaying,
+  isPlaying: [getIsPlaying, setIsPlaying],
   children,
   queueChanged,
 }: PlayTrackProps) => {
@@ -21,7 +22,7 @@ export const PlayTrack = ({
     if (device === null) return;
 
     playTrack({ device });
-    isPlaying(true);
+    setIsPlaying(true);
   };
 
   useEffect(() => {

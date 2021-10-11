@@ -1,5 +1,5 @@
 export const parseTogglePlay = (currentState: boolean) => {
-  if (!currentState) return "Resume";
+  if (!currentState) return "Pause";
 
-  return "Pause";
+  return "Resume";
 };

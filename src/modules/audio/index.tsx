@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -24,15 +24,10 @@ export const Audio = () => {
 
   const getSearchMusic = useRecoilValue(MusicController.state.getSearchedMusic);
 
-  // const setSelectedMusic = useSetRecoilState(
-  //   MusicController.state.setSelectedMusic
-  // );
-
-  // const getSelectedMusic = useRecoilValue(
-  //   MusicController.state.getSelectedMusic
-  // );
+  const getIsSearching = useRecoilValue(MusicController.state.getIsSearching);
 
   const setIsPlaying = useSetRecoilState(PlayerController.state.setIsPlaying);
+  const getIsPlaying = useRecoilValue(PlayerController.state.getIsPlaying);
 
   const setPlayerQueue = useSetRecoilState(
     PlayerController.state.setPlayerQueue
@@ -59,11 +54,23 @@ export const Audio = () => {
   const handleSelectedMusic = (musicTrack: {
     uri?: string;
     name?: string;
-    image?: string;
+    album?: {
+      name?: string;
+      images?: { url?: string; height?: number; width?: number }[];
+      artists?: { name?: string };
+    };
+    artists?: { name: string };
     active?: boolean;
     duration_ms?: number;
   }) => {
-    setPlayerQueue((oldState) => [...oldState, musicTrack]);
+    const checkIfMusicExists = getPlayerQueue.some(
+      (track: { uri?: string }) => track.uri === musicTrack.uri
+    );
+
+    if (!checkIfMusicExists) {
+      setPlayerQueue((oldState) => [...oldState, musicTrack]);
+    }
+
     // setSelectedMusic({
     //   uri: musicTrack?.uri,
     //   name: musicTrack?.name,
@@ -74,19 +81,34 @@ export const Audio = () => {
   const handlePlayTrack = useCallback(
     ({ device }) => {
       const filterActives = getPlayerQueue.filter(
-        (playerQueue) => playerQueue.active
+        (playerQueue: { uri?: string; active?: boolean; img?: string }) =>
+          playerQueue.active
       );
 
-      const playTrack = PlayerController.hooks.playTrack({
-        device,
-        access_token: accessToken,
-        filterActives: filterActives[0],
-      });
+      // const playTrack = PlayerController.hooks.playTrack({
+      //   device,
+      //   access_token: accessToken,
+      //   filterActives: filterActives[3],
+      // });
 
-      return playTrack;
+      // return playTrack;
     },
     [getPlayerQueue]
   );
+
+  const parseMusicList = useCallback(() => {
+    if (getPlayerQueue.length > 1 && !getIsSearching) {
+      return {
+        MUSIC_SECTION_BEHVAVIOR: "QUEUE",
+        items: getPlayerQueue.slice(1),
+      };
+    }
+
+    return {
+      MUSIC_SECTION_BEHVAVIOR: "SEARCH",
+      items: getSearchMusic,
+    };
+  }, [getIsSearching, getPlayerQueue.length, getSearchMusic]);
 
   useEffect(() => {
     handleRecommendations();
@@ -98,11 +120,11 @@ export const Audio = () => {
         <>
           <AudioSection>
             <MusicSection
-              items={getSearchMusic}
+              music={parseMusicList()}
               selectedTrack={handleSelectedMusic}
             />
             <PlayerSection
-              isPlaying={setIsPlaying}
+              isPlaying={[getIsPlaying, setIsPlaying]}
               playTrack={handlePlayTrack}
               queueChanged={getPlayerQueue}
               getAccessToken={accessToken}

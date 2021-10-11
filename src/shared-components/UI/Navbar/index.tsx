@@ -26,10 +26,6 @@ export const NavBar = () => {
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
 
   const getIsPlaying = useRecoilValue(PlayerController.state.getIsPlaying);
-  console.log(
-    "🚀 ~ file: index.tsx ~ line 29 ~ NavBar ~ getIsPlaying",
-    getIsPlaying
-  );
 
   return (
     <NavBarContainer>
