@@ -18,27 +18,27 @@ export const Audio = () => {
     UserAuthController.state.getIsUserAuthenticated
   );
 
-  const setMusic = useSetRecoilState(MusicController.state.setMusic);
-  const getMusic = useRecoilValue(MusicController.state.getMusic);
-
-  const setPlayTrackFromApi = useSetRecoilState(
-    PlayerController.state.setPlayTrackFromApi
+  const setSearchMusic = useSetRecoilState(
+    MusicController.state.setSearchedMusic
   );
 
-  const playTrackFromApi = useRecoilValue(
-    PlayerController.state.getPlayTrackFromApi
+  const getSearchMusic = useRecoilValue(MusicController.state.getSearchedMusic);
+
+  // const setSelectedMusic = useSetRecoilState(
+  //   MusicController.state.setSelectedMusic
+  // );
+
+  // const getSelectedMusic = useRecoilValue(
+  //   MusicController.state.getSelectedMusic
+  // );
+
+  const setIsPlaying = useSetRecoilState(PlayerController.state.setIsPlaying);
+
+  const setPlayerQueue = useSetRecoilState(
+    PlayerController.state.setPlayerQueue
   );
 
-  const setSelectedMusic = useSetRecoilState(
-    MusicController.state.setSelectedMusic
-  );
-
-  const getSelectedMusic = useRecoilValue(
-    MusicController.state.getSelectedMusic
-  );
-
-  // const setPlayerQueue = useRecoilValue(PlayerController.state.setPlayerQueue);
-  // const getPlayerQueue = useRecoilValue(PlayerController.state.getPlayerQueue);
+  const getPlayerQueue = useRecoilValue(PlayerController.state.getPlayerQueue);
 
   const handleRecommendations = useCallback(() => {
     // TODO Fix api call if user refreshs screen ( needs to verify if recommendations length already exists)
@@ -49,7 +49,7 @@ export const Audio = () => {
           type: "tracks",
         })
         .then((res) => {
-          setMusic(res?.items);
+          setSearchMusic(res?.items);
         });
 
       return getRecommendations;
@@ -60,31 +60,32 @@ export const Audio = () => {
     uri?: string;
     name?: string;
     image?: string;
+    active?: boolean;
+    duration_ms?: number;
   }) => {
-    setSelectedMusic({
-      uri: musicTrack?.uri,
-      name: musicTrack?.name,
-      image: musicTrack?.image,
-    });
+    setPlayerQueue((oldState) => [...oldState, musicTrack]);
+    // setSelectedMusic({
+    //   uri: musicTrack?.uri,
+    //   name: musicTrack?.name,
+    //   image: musicTrack?.image,
+    // });
   };
 
   const handlePlayTrack = useCallback(
     ({ device }) => {
-      const playTrack = PlayerController.hooks
-        .playTrack({
-          device,
-          access_token: accessToken,
-          getSelectedMusic,
-        })
-        .then(() => {
-          if (!playTrackFromApi) {
-            setPlayTrackFromApi(true);
-          }
-        });
+      const filterActives = getPlayerQueue.filter(
+        (playerQueue) => playerQueue.active
+      );
+
+      const playTrack = PlayerController.hooks.playTrack({
+        device,
+        access_token: accessToken,
+        filterActives: filterActives[0],
+      });
 
       return playTrack;
     },
-    [getSelectedMusic]
+    [getPlayerQueue]
   );
 
   useEffect(() => {
@@ -96,15 +97,14 @@ export const Audio = () => {
       {isUserAuthenticated && (
         <>
           <AudioSection>
-            {getMusic.length && (
-              <MusicSection
-                items={getMusic}
-                selectedTrack={handleSelectedMusic}
-              />
-            )}
+            <MusicSection
+              items={getSearchMusic}
+              selectedTrack={handleSelectedMusic}
+            />
             <PlayerSection
-              showControls={playTrackFromApi}
+              isPlaying={setIsPlaying}
               playTrack={handlePlayTrack}
+              queueChanged={getPlayerQueue}
               getAccessToken={accessToken}
             />
           </AudioSection>

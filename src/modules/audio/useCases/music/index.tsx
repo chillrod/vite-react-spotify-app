@@ -13,9 +13,11 @@ import { MusicCard, MusicCardData, MusicList } from "./styles";
 import { SpotleafColors } from "../../../../config/spotleaf/colors";
 
 interface MusicSectionProps {
+  active?: boolean;
   items: {
     name?: string;
     uri?: string;
+    duration_ms?: number;
 
     album?: {
       name?: string;
@@ -35,6 +37,8 @@ interface MusicSectionProps {
     uri?: string;
     name?: string;
     image?: string;
+    duration_ms?: number;
+    active?: boolean;
   }) => void;
 }
 
@@ -54,7 +58,11 @@ interface MusicTrackProps {
   };
 }
 
-export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
+export const MusicSection = ({
+  items,
+  selectedTrack,
+  active,
+}: MusicSectionProps) => {
   const attachPallete = (musicTrack: MusicTrackProps) => {
     const imageUrl = returnImageUrl(
       returnIndexOfArray(musicTrack?.album?.images, 1)
@@ -67,44 +75,45 @@ export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
 
   return (
     <MusicList>
-      {items.length &&
-        items.map((musicTrack) => (
-          <MusicCard
-            whileHover={{ scale: 1.05 }}
-            color={attachPallete(musicTrack)}
-            key={musicTrack.uri}
-            onClick={() =>
-              selectedTrack({
-                uri: musicTrack?.uri,
-                name: musicTrack?.name,
-                image: returnImageUrl(
-                  returnIndexOfArray(musicTrack.album?.images, 1)
-                ),
-              })
-            }
-          >
-            <>
-              <img
-                src={returnImageUrl(
-                  returnIndexOfArray(musicTrack.album?.images, 1)
-                )}
-                alt={musicTrack.name}
+      {items.map((musicTrack) => (
+        <MusicCard
+          whileHover={{ scale: 1.05 }}
+          color={attachPallete(musicTrack)}
+          key={musicTrack.uri}
+          onClick={() =>
+            selectedTrack({
+              uri: musicTrack?.uri,
+              name: musicTrack?.name,
+              image: returnImageUrl(
+                returnIndexOfArray(musicTrack.album?.images, 1)
+              ),
+              active: true,
+              duration_ms: musicTrack?.duration_ms,
+            })
+          }
+        >
+          <>
+            <img
+              src={returnImageUrl(
+                returnIndexOfArray(musicTrack.album?.images, 1)
+              )}
+              alt={musicTrack.name}
+            />
+            <MusicCardData>
+              <TextComponent text={musicTrack.name} as="h2" size="md" />
+              <TextComponent
+                text={
+                  returnArtist(
+                    returnIndexOfArray(musicTrack.album?.artists, 0)
+                  ) || "Loading"
+                }
+                as="p"
+                size="sm"
               />
-              <MusicCardData>
-                <TextComponent text={musicTrack.name} as="h2" size="md" />
-                <TextComponent
-                  text={
-                    returnArtist(
-                      returnIndexOfArray(musicTrack.album?.artists, 0)
-                    ) || "Loading"
-                  }
-                  as="p"
-                  size="sm"
-                />
-              </MusicCardData>
-            </>
-          </MusicCard>
-        ))}
+            </MusicCardData>
+          </>
+        </MusicCard>
+      ))}
     </MusicList>
   );
 };

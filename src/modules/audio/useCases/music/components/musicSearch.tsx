@@ -8,14 +8,16 @@ import { MusicController } from "../controller";
 
 import { InputComponent } from "../../../../../shared-components/UI/Input";
 
-import { TextComponent } from "../../../../../shared-components/UI/Text";
-
 import { AudioSearchSection } from "./musicSearch.styles";
 
 export const MusicSearch = ({ accessToken }: any) => {
-  const setMusic = useSetRecoilState(MusicController.state.setMusic);
+  const setSearchedMusic = useSetRecoilState(
+    MusicController.state.setSearchedMusic
+  );
 
-  const getMusic = useRecoilValue(MusicController.state.getMusic);
+  const getSearchedMusic = useRecoilValue(
+    MusicController.state.getSearchedMusic
+  );
 
   const handleSearchQuery = useCallback(
     (event) => {
@@ -27,14 +29,14 @@ export const MusicSearch = ({ accessToken }: any) => {
             type: "track",
           })
           .then((res) => {
-            setMusic(res?.tracks?.items);
+            setSearchedMusic(res?.tracks?.items);
           });
       }
     },
-    [accessToken, getMusic.length]
+    [accessToken, getSearchedMusic.length]
   );
 
-  const searchDebouncer = debounce(handleSearchQuery, 700);
+  const searchDebouncer = debounce(handleSearchQuery, 600);
 
   return (
     <AudioSearchSection>

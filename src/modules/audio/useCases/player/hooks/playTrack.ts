@@ -3,9 +3,14 @@ import axios from "axios";
 export const playTrack = async ({
   device,
   access_token,
-  getSelectedMusic,
+  filterActives,
 }: any) => {
-  const { uri } = getSelectedMusic;
+  console.log(
+    "🚀 ~ file: playTrack.ts ~ line 8 ~ getSelectedMusic",
+    filterActives
+  );
+
+  const { uri } = filterActives;
 
   try {
     const request = await axios.put(

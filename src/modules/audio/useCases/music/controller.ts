@@ -1,5 +1,6 @@
-import { musicData } from "../../model/musicData";
-import { getMusic } from "../../getters/getMusic";
+import { searchedMusicData } from "../../model/searchedMusicData";
+import { getSearchedMusic } from "../../getters/getSearchedMusic";
+
 import { selectedMusicData } from "../../model/selectedMusicData";
 import { getSelectedMusic } from "../../getters/getSelectedMusic";
 
@@ -9,8 +10,8 @@ import { setSelectedMusic } from "./hooks/selectedMusic";
 
 export const MusicController = {
   state: {
-    setMusic: musicData,
-    getMusic: getMusic,
+    setSearchedMusic: searchedMusicData,
+    getSearchedMusic,
     setSelectedMusic: selectedMusicData,
     getSelectedMusic: getSelectedMusic,
   },

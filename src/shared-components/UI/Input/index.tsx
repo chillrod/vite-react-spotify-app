@@ -20,7 +20,7 @@ export const InputComponent = ({
 }: InputComponentProps) => {
   return (
     <>
-      <InputGroup mt="5">
+      <InputGroup>
         {search && <InputLeftElement color="gray.200" children={<Search />} />}
         <Input
           placeholder={placeholder}

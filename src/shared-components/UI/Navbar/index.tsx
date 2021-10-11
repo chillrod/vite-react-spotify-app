@@ -1,9 +1,10 @@
 import React from "react";
+
 import { useRecoilValue } from "recoil";
 
 import { UserAuthController } from "../../../modules/user/useCases/user-auth/controller";
 import { PlayerController } from "../../../modules/audio/useCases/player/controller";
-import { PlayerState } from "../../../modules/audio/useCases/player/components/playerState";
+import { CurrentPlayingState } from "../../../modules/audio/useCases/player/components/currentPlayingState";
 
 import SpotleafLogo from "../../../config/spotleaf/logo.svg";
 import SpotleafInsideLogo from "../../../config/spotleaf/insidelogo.svg";
@@ -24,8 +25,10 @@ export const NavBar = () => {
 
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
 
-  const getCurrentPlaying = useRecoilValue(
-    PlayerController.state.getCurrentPlaying
+  const getIsPlaying = useRecoilValue(PlayerController.state.getIsPlaying);
+  console.log(
+    "🚀 ~ file: index.tsx ~ line 29 ~ NavBar ~ getIsPlaying",
+    getIsPlaying
   );
 
   return (
@@ -39,8 +42,8 @@ export const NavBar = () => {
       )}
 
       <NavBarMusicContainer>
-        {getCurrentPlaying.length !== 0 && <PlayerState />}
-        {!getCurrentPlaying.length && <div />}
+        {getIsPlaying && <CurrentPlayingState />}
+        {!getIsPlaying && <div />}
         {getIsUserAuthenticated && <MusicSearch accessToken={accessToken} />}
       </NavBarMusicContainer>
     </NavBarContainer>

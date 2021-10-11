@@ -1,7 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-import { SpotleafColors } from "../../../../../config/spotleaf/colors";
-
 interface Props {
   spotleafPrimary?: string;
 }
