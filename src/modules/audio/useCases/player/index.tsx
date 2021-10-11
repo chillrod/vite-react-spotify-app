@@ -1,10 +1,10 @@
 import React from "react";
+
 import { SetterOrUpdater } from "recoil";
 
 import { CurrentSong } from "./components/currentSong";
 import { PlayTrack } from "./components/playTrack";
 import { SpotifyPlayer } from "./components/player";
-import { PlayerDeck } from "./components/playerDeck";
 import { PlayerSdk } from "./components/playerSdk";
 
 import { PlayerGUI } from "./styles";
@@ -28,7 +28,6 @@ export const PlayerSection = ({
           {showControls && <SpotifyPlayer />}
         </PlayerGUI>
       </PlayerSdk>
-      <PlayerDeck />
     </>
   );
 };

@@ -96,28 +96,30 @@ export const Audio = () => {
   return (
     <>
       {isUserAuthenticated && (
-        <AudioSection>
-          {getMusic.length && (
-            <MusicSection
-              items={getMusic}
-              selectedTrack={handleSelectedMusic}
+        <>
+          <AudioSection>
+            {getMusic.length && (
+              <MusicSection
+                items={getMusic}
+                selectedTrack={handleSelectedMusic}
+              />
+            )}
+            <PlayerSection
+              showControls={getIsFirstPlayTrack}
+              playTrack={handlePlayTrack}
+              getAccessToken={accessToken}
             />
-          )}
-          <PlayerSection
-            showControls={getIsFirstPlayTrack}
-            playTrack={handlePlayTrack}
-            getAccessToken={accessToken}
-          />
-        </AudioSection>
+          </AudioSection>
+          <AudioFallbackSection>
+            <TextComponent
+              isText
+              text="Please rotate your phone"
+              fontSize="2.5rem"
+              color={SpotleafColors.primary}
+            />
+          </AudioFallbackSection>
+        </>
       )}
-      <AudioFallbackSection>
-        <TextComponent
-          isText
-          text="Please rotate your phone"
-          fontSize="2.5rem"
-          color={SpotleafColors.primary}
-        />
-      </AudioFallbackSection>
     </>
   );
 };
