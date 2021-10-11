@@ -6,6 +6,7 @@ interface TextComponentProps {
   text?: string;
   as?: any;
   size?: any;
+  fontSize?: string;
   isText?: boolean;
   color?: string;
 }
@@ -14,13 +15,14 @@ export const TextComponent = ({
   text,
   as,
   size,
+  fontSize,
   color,
   isText = false,
 }: TextComponentProps) => {
   return (
     <>
       {isText && (
-        <Text as={as} size={size} mt="3">
+        <Text fontSize={fontSize} color={color}>
           {text}
         </Text>
       )}

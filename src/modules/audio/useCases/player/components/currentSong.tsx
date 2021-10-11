@@ -1,18 +1,21 @@
 import React from "react";
 
 import { usePlaybackState } from "react-spotify-web-playback-sdk";
-import { TextComponent } from "../../../../../shared-components/UI/Text";
+
+import { useSetRecoilState } from "recoil";
+
+import { PlayerController } from "../controller";
 
 export const CurrentSong = () => {
   const playbackState = usePlaybackState();
 
+  const setCurrentPlaying = useSetRecoilState(
+    PlayerController.state.setCurrentPlaying
+  );
+
+  setCurrentPlaying(playbackState?.track_window.current_track.name || "");
+
   if (playbackState === null) return null;
 
-  return (
-    <TextComponent
-      text={`Current playing: ${playbackState.track_window.current_track.name}`}
-      as="p"
-      size="sm"
-    />
-  );
+  return <></>;
 };

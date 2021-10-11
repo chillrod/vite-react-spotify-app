@@ -1,14 +1,13 @@
-import React, { useCallback } from "react";
-
-import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
+import React from "react";
+import { SetterOrUpdater } from "recoil";
 
 import { CurrentSong } from "./components/currentSong";
 import { PlayTrack } from "./components/playTrack";
 import { SpotifyPlayer } from "./components/player";
-import { SetterOrUpdater } from "recoil";
-import { PlayerGUI } from "./styles";
 import { PlayerDeck } from "./components/playerDeck";
+import { PlayerSdk } from "./components/playerSdk";
 
+import { PlayerGUI } from "./styles";
 interface PlayerSectionProps {
   showControls: boolean;
   playTrack: SetterOrUpdater<boolean>;
@@ -20,20 +19,15 @@ export const PlayerSection = ({
   playTrack,
   getAccessToken,
 }: PlayerSectionProps) => {
-  const getOAuthToken = useCallback((callback) => callback(getAccessToken), []);
-
   return (
     <>
-      <WebPlaybackSDK
-        deviceName="Spotleaf web player 🍀"
-        getOAuthToken={getOAuthToken}
-      >
+      <PlayerSdk getAccessToken={getAccessToken}>
         <PlayerGUI>
           <CurrentSong />
           <PlayTrack playTrack={playTrack} />
           {showControls && <SpotifyPlayer />}
         </PlayerGUI>
-      </WebPlaybackSDK>
+      </PlayerSdk>
       <PlayerDeck />
     </>
   );

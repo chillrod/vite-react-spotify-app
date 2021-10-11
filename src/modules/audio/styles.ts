@@ -1,9 +1,19 @@
 import styled from "styled-components";
 
-export const AudioSection = styled.section`
+export const AudioFallbackSection = styled.section`
   padding: 0 1em;
+
+  @media (orientation: landscape) {
+    p {
+      display: none;
+    }
+  }
 `;
 
-export const AudioSearchSection = styled.div`
-  margin: 2em 0;
+export const AudioSection = styled.section`
+  padding: 0 1em;
+
+  @media (orientation: portrait) {
+    display: none;
+  }
 `;

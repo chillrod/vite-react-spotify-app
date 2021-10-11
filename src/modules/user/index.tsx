@@ -6,9 +6,6 @@ import { AuthSection } from "./useCases/user-auth";
 import { UserAuthController } from "./useCases/user-auth/controller";
 import { oAuthCredentials } from "../../config/auth/oAuthCredentials";
 
-import { UserDataSection } from "./useCases/user-data";
-import { UserDataController } from "./useCases/user-data/controller";
-
 import { UserSection } from "./styles";
 
 export const User = () => {
@@ -20,9 +17,7 @@ export const User = () => {
   const setIsUserAuthenticated = useSetRecoilState(
     UserAuthController.state.setIsUserAuthenticated
   );
-  const setUserData = useSetRecoilState(UserDataController.state.set);
 
-  const getUserData = useRecoilValue(UserDataController.state.get);
   const getIsUserAuthenticated = useRecoilValue(
     UserAuthController.state.getIsUserAuthenticated
   );
@@ -45,15 +40,7 @@ export const User = () => {
         })
         .then((access_token) => {
           setAccessToken(access_token);
-
-          UserDataController.hooks
-            .handleAuthenticatedUser({ access_token })
-            .then((userResponse) => {
-              if (userResponse) {
-                setUserData({ ...userResponse });
-                setIsUserAuthenticated(true);
-              }
-            });
+          setIsUserAuthenticated(true);
         });
 
       getQueryString.delete("code");
@@ -71,8 +58,6 @@ export const User = () => {
           scopes={scopes}
         />
       )}
-
-      {getIsUserAuthenticated && <UserDataSection user={getUserData} />}
     </UserSection>
   );
 };

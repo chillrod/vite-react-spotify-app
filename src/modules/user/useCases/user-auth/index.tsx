@@ -4,6 +4,7 @@ import { handleAuthorization } from "./hooks/handleAuthorization";
 import { AuthContainer } from "./styles";
 import { ButtonComponent } from "../../../../shared-components/UI/Button";
 import { TextComponent } from "../../../../shared-components/UI/Text";
+import { SpotleafColors } from "../../../../config/spotleaf/colors";
 
 interface AuthSectionProps {
   authBehavior: string;
@@ -23,12 +24,14 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
       {authBehavior === "GET_AUTHORIZATION" && (
         <>
           <TextComponent
-            as="h2"
-            size="xl"
-            text="Hello! Please log-in to Spotify to continue"
+            isText
+            fontSize={"2.5rem"}
+            color={SpotleafColors.primary}
+            text="join spotify to continue"
           />
           <AuthContainer>
             <ButtonComponent
+              homeBtn
               onClick={() =>
                 handleAuthorization({
                   client_id,
