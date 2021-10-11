@@ -1,5 +1,7 @@
 import React from "react";
 
+import { usePalette } from "react-palette";
+
 import { returnImageUrl } from "../../../../helpers/imageUrl";
 import { returnIndexOfArray } from "../../../../helpers/returnIndex";
 import { returnArtist } from "../../../../helpers/returnArtist";
@@ -7,6 +9,8 @@ import { returnArtist } from "../../../../helpers/returnArtist";
 import { TextComponent } from "../../../../shared-components/UI/Text";
 
 import { MusicCard, MusicCardData, MusicList } from "./styles";
+
+import { SpotleafColors } from "../../../../config/spotleaf/colors";
 
 interface MusicSectionProps {
   items: {
@@ -34,34 +38,40 @@ interface MusicSectionProps {
   }) => void;
 }
 
-const dragTransitionVariants = {
-  power: 0.1,
-  min: 0,
-  max: 0,
-  restDelta: 5000,
-};
+interface MusicTrackProps {
+  album?: {
+    name?: string;
 
-const motionTransition = {
-  duration: 0.001,
-};
+    artists?: {
+      name?: string;
+    };
 
-const dragConstraints = {
-  top: 0,
-  bottom: 0,
-};
+    images: {
+      url?: string;
+      height: number;
+      width: number;
+    };
+  };
+}
 
 export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
+  const attachPallete = (musicTrack: MusicTrackProps) => {
+    const imageUrl = returnImageUrl(
+      returnIndexOfArray(musicTrack?.album?.images, 1)
+    );
+
+    const { data } = usePalette(imageUrl);
+
+    return data.darkMuted;
+  };
+
   return (
     <MusicList>
       {items.length &&
         items.map((musicTrack) => (
           <MusicCard
-            initial={false}
-            whileTap={{ scale: 1.1 }}
-            drag
-            transition={motionTransition}
-            dragTransition={dragTransitionVariants}
-            dragConstraints={dragConstraints}
+            whileHover={{ scale: 1.05 }}
+            color={attachPallete(musicTrack)}
             key={musicTrack.uri}
             onClick={() =>
               selectedTrack({
@@ -78,7 +88,7 @@ export const MusicSection = ({ items, selectedTrack }: MusicSectionProps) => {
                 src={returnImageUrl(
                   returnIndexOfArray(musicTrack.album?.images, 1)
                 )}
-                alt=""
+                alt={musicTrack.name}
               />
               <MusicCardData>
                 <TextComponent text={musicTrack.name} as="h2" size="md" />

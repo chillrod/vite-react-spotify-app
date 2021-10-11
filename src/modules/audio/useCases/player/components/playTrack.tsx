@@ -1,8 +1,15 @@
 import React from "react";
+import { Play } from "react-feather";
 import { usePlayerDevice } from "react-spotify-web-playback-sdk";
-import { ButtonComponent } from "../../../../../shared-components/UI/Button";
 
-export const PlayTrack = ({ playTrack }: any) => {
+import { PlayTrackButton } from "./player.styles";
+
+interface PlayTrackProps {
+  playTrack?: any;
+  children?: JSX.Element;
+}
+
+export const PlayTrack = ({ playTrack, children }: PlayTrackProps) => {
   const device = usePlayerDevice();
 
   const playMusic = () => {
@@ -12,6 +19,11 @@ export const PlayTrack = ({ playTrack }: any) => {
   };
 
   return (
-    <ButtonComponent play text="Play track" onClick={playMusic} color="teal" />
+    <PlayTrackButton onClick={playMusic}>
+      <>
+        <Play />
+        {children}
+      </>
+    </PlayTrackButton>
   );
 };

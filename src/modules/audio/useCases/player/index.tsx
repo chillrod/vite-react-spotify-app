@@ -9,23 +9,27 @@ import { PlayerSdk } from "./components/playerSdk";
 
 import { PlayerGUI } from "./styles";
 interface PlayerSectionProps {
-  showControls: boolean;
   playTrack: SetterOrUpdater<boolean>;
   getAccessToken?: any;
+  showControls: boolean;
 }
 
 export const PlayerSection = ({
-  showControls,
   playTrack,
   getAccessToken,
+  showControls,
 }: PlayerSectionProps) => {
   return (
     <>
       <PlayerSdk getAccessToken={getAccessToken}>
         <PlayerGUI>
           <CurrentSong />
-          <PlayTrack playTrack={playTrack} />
-          {showControls && <SpotifyPlayer />}
+          {!showControls && <PlayTrack playTrack={playTrack} />}
+          {showControls && (
+            <>
+              <SpotifyPlayer />
+            </>
+          )}
         </PlayerGUI>
       </PlayerSdk>
     </>

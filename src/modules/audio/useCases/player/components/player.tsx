@@ -1,17 +1,29 @@
 import React, { useState } from "react";
+import { useRecoilValue } from "recoil";
+
+import { Play } from "react-feather";
+
+import { MusicController } from "../../music/controller";
 
 import {
   useSpotifyPlayer,
   SpotifyPlayer as SpotifyPlayerType,
 } from "react-spotify-web-playback-sdk";
+
+import { SpotleafColors } from "../../../../../config/spotleaf/colors";
+
 import { parseTogglePlay } from "../../../../../helpers/parseTogglePlay";
 
-import { ButtonComponent } from "../../../../../shared-components/UI/Button";
+import { PlayTrackButton } from "./player.styles";
 
 export const SpotifyPlayer = (): any => {
   const [togglePlay, setTogglePlay] = useState(true);
 
   const player = useSpotifyPlayer();
+
+  const getSelectedMusic = useRecoilValue(
+    MusicController.state.getSelectedMusic
+  );
 
   const togglePlayer = (playerInstance: SpotifyPlayerType) => {
     playerInstance.togglePlay();
@@ -23,11 +35,12 @@ export const SpotifyPlayer = (): any => {
 
   return (
     <>
-      <ButtonComponent
+      <PlayTrackButton
         onClick={() => togglePlayer(player)}
-        text={parseTogglePlay(togglePlay)}
-        color="teal"
-      />
+        spotleafPrimary={SpotleafColors.primary}
+      >
+        <Play />
+      </PlayTrackButton>
     </>
   );
 };

@@ -6,7 +6,7 @@ import { Audio } from "./modules/audio";
 
 export const App = () => {
   return (
-    <div>
+    <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
       <NavBar />
       <User />
       <Audio />

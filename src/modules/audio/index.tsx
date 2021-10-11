@@ -9,12 +9,7 @@ import { PlayerController } from "./useCases/player/controller";
 import { MusicSection } from "./useCases/music";
 import { PlayerSection } from "./useCases/player";
 
-import { InputComponent } from "../../shared-components/UI/Input";
-import { TextComponent } from "../../shared-components/UI/Text";
-
-import { AudioSection, AudioFallbackSection } from "./styles";
-
-import { SpotleafColors } from "../../config/spotleaf/colors";
+import { AudioSection } from "./styles";
 
 export const Audio = () => {
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
@@ -26,12 +21,12 @@ export const Audio = () => {
   const setMusic = useSetRecoilState(MusicController.state.setMusic);
   const getMusic = useRecoilValue(MusicController.state.getMusic);
 
-  const setFirstPlayTrack = useSetRecoilState(
-    PlayerController.state.setFirstPlay
+  const setPlayTrackFromApi = useSetRecoilState(
+    PlayerController.state.setPlayTrackFromApi
   );
 
-  const getIsFirstPlayTrack = useRecoilValue(
-    PlayerController.state.getIsFirstPlay
+  const playTrackFromApi = useRecoilValue(
+    PlayerController.state.getPlayTrackFromApi
   );
 
   const setSelectedMusic = useSetRecoilState(
@@ -41,6 +36,9 @@ export const Audio = () => {
   const getSelectedMusic = useRecoilValue(
     MusicController.state.getSelectedMusic
   );
+
+  // const setPlayerQueue = useRecoilValue(PlayerController.state.setPlayerQueue);
+  // const getPlayerQueue = useRecoilValue(PlayerController.state.getPlayerQueue);
 
   const handleRecommendations = useCallback(() => {
     // TODO Fix api call if user refreshs screen ( needs to verify if recommendations length already exists)
@@ -79,8 +77,8 @@ export const Audio = () => {
           getSelectedMusic,
         })
         .then(() => {
-          if (!getIsFirstPlayTrack) {
-            setFirstPlayTrack(true);
+          if (!playTrackFromApi) {
+            setPlayTrackFromApi(true);
           }
         });
 
@@ -105,19 +103,11 @@ export const Audio = () => {
               />
             )}
             <PlayerSection
-              showControls={getIsFirstPlayTrack}
+              showControls={playTrackFromApi}
               playTrack={handlePlayTrack}
               getAccessToken={accessToken}
             />
           </AudioSection>
-          <AudioFallbackSection>
-            <TextComponent
-              isText
-              text="Please rotate your phone"
-              fontSize="2.5rem"
-              color={SpotleafColors.primary}
-            />
-          </AudioFallbackSection>
         </>
       )}
     </>

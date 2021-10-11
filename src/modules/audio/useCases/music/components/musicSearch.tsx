@@ -1,5 +1,7 @@
 import React, { useCallback } from "react";
 
+import debounce from "lodash.debounce";
+
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { MusicController } from "../controller";
@@ -32,12 +34,14 @@ export const MusicSearch = ({ accessToken }: any) => {
     [accessToken, getMusic.length]
   );
 
+  const searchDebouncer = debounce(handleSearchQuery, 700);
+
   return (
     <AudioSearchSection>
       <InputComponent
         search
         placeholder="Search"
-        onChange={handleSearchQuery}
+        onChange={searchDebouncer}
         variant="filled"
       />
     </AudioSearchSection>
