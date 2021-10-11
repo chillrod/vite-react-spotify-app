@@ -3,7 +3,7 @@ export const oAuthCredentials = {
 
   client_secret: import.meta.env.VITE_SPOTIFY_CLIENT_SECRET || "",
 
-  redirect_uri: "http://localhost:3000",
+  redirect_uri: "https://devspotleaf.vercel.app/",
 
   grant_type: "authorization_code",
 
