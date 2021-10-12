@@ -10,15 +10,16 @@ import { TextComponent } from "../../../../../shared-components/UI/Text";
 
 import { MusicCard, MusicCardData } from "./musicCard.styles";
 
-interface MusicTrackProps {
+interface MusicImageProps {
   url?: string;
   height?: number;
   width?: number;
 }
 
 interface MusicSectionProps {
-  active?: boolean;
+  behavior?: string;
   musicTrack?: {
+    active?: boolean;
     name?: string;
     uri?: string;
     duration_ms?: number;
@@ -37,7 +38,7 @@ interface MusicSectionProps {
       }[];
     };
   };
-  attachPallete: (images: MusicTrackProps[]) => string | undefined;
+  attachPallete: (images: MusicImageProps[]) => string | undefined;
 
   selectedTrack: (musicTrack: {
     uri?: string;
@@ -50,33 +51,62 @@ interface MusicSectionProps {
     duration_ms?: number;
     active?: boolean;
   }) => void;
+
+  toggleActive: (musicTrack: {
+    uri?: string;
+    name?: string;
+    album?: {
+      name?: string;
+      images?: { url?: string; height?: number; width?: number }[];
+      artists?: { name?: string };
+    };
+    duration_ms?: number;
+    active?: boolean;
+  }) => void;
 }
 export const MusicCardContainer = ({
+  behavior,
   selectedTrack,
+  toggleActive,
   musicTrack,
   attachPallete,
 }: MusicSectionProps) => {
   return (
     <MusicCard
       whileHover={{ scale: 1.05 }}
+      active={musicTrack?.active}
       color={
         musicTrack?.album?.images
           ? attachPallete(musicTrack?.album?.images)
           : ""
       }
       key={musicTrack?.uri}
-      onClick={() =>
-        selectedTrack({
-          uri: musicTrack?.uri,
-          name: musicTrack?.name,
-          album: {
-            name: musicTrack?.album?.name,
-            images: musicTrack?.album?.images,
-            artists: musicTrack?.album?.artists,
-          },
-          active: true,
-          duration_ms: musicTrack?.duration_ms,
-        })
+      onClick={
+        behavior === "Search"
+          ? () =>
+              selectedTrack({
+                uri: musicTrack?.uri,
+                name: musicTrack?.name,
+                album: {
+                  name: musicTrack?.album?.name,
+                  images: musicTrack?.album?.images,
+                  artists: musicTrack?.album?.artists,
+                },
+                active: true,
+                duration_ms: musicTrack?.duration_ms,
+              })
+          : () =>
+              toggleActive({
+                uri: musicTrack?.uri,
+                name: musicTrack?.name,
+                album: {
+                  name: musicTrack?.album?.name,
+                  images: musicTrack?.album?.images,
+                  artists: musicTrack?.album?.artists,
+                },
+                active: !musicTrack?.active,
+                duration_ms: musicTrack?.duration_ms,
+              })
       }
     >
       <img

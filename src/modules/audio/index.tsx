@@ -11,6 +11,19 @@ import { PlayerSection } from "./useCases/player";
 
 import { AudioSection } from "./styles";
 
+interface MusicTrackProps {
+  uri?: string;
+  name?: string;
+  album?: {
+    name?: string;
+    images?: { url?: string; height?: number; width?: number }[];
+    artists?: { name?: string };
+  };
+  artists?: { name: string };
+  active?: boolean;
+  duration_ms?: number;
+}
+
 export const Audio = () => {
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
 
@@ -51,18 +64,7 @@ export const Audio = () => {
     }
   }, [isUserAuthenticated]);
 
-  const handleSelectedMusic = (musicTrack: {
-    uri?: string;
-    name?: string;
-    album?: {
-      name?: string;
-      images?: { url?: string; height?: number; width?: number }[];
-      artists?: { name?: string };
-    };
-    artists?: { name: string };
-    active?: boolean;
-    duration_ms?: number;
-  }) => {
+  const handleSelectedMusic = (musicTrack: MusicTrackProps) => {
     const checkIfMusicExists = getPlayerQueue.some(
       (track: { uri?: string }) => track.uri === musicTrack.uri
     );
@@ -76,6 +78,26 @@ export const Audio = () => {
     //   name: musicTrack?.name,
     //   image: musicTrack?.image,
     // });
+  };
+
+  const handleToggleActive = (musicTrack: MusicTrackProps) => {
+    const findTrackToUpdate =
+      getPlayerQueue.find(
+        (musicToSearch: { uri?: string }) =>
+          musicToSearch.uri === musicTrack.uri
+      ) || "";
+
+    const getIndex = getPlayerQueue.indexOf(findTrackToUpdate);
+
+    const removeAndUpdate = getPlayerQueue.map(
+      (queues: any, queuesIndex: number) => {
+        if (queuesIndex === getIndex) queues = musicTrack;
+
+        return queues;
+      }
+    );
+
+    setPlayerQueue(removeAndUpdate);
   };
 
   const handlePlayTrack = useCallback(
@@ -99,16 +121,16 @@ export const Audio = () => {
   const parseMusicList = useCallback(() => {
     if (getPlayerQueue.length > 1 && !getIsSearching) {
       return {
-        MUSIC_SECTION_BEHVAVIOR: "QUEUE",
+        MUSIC_SECTION_BEHVAVIOR: "Queue",
         items: getPlayerQueue.slice(1),
       };
     }
 
     return {
-      MUSIC_SECTION_BEHVAVIOR: "SEARCH",
+      MUSIC_SECTION_BEHVAVIOR: "Search",
       items: getSearchMusic,
     };
-  }, [getIsSearching, getPlayerQueue.length, getSearchMusic]);
+  }, [getIsSearching, getPlayerQueue, getSearchMusic]);
 
   useEffect(() => {
     handleRecommendations();
@@ -121,6 +143,7 @@ export const Audio = () => {
           <AudioSection>
             <MusicSection
               music={parseMusicList()}
+              toggleActive={handleToggleActive}
               selectedTrack={handleSelectedMusic}
             />
             <PlayerSection

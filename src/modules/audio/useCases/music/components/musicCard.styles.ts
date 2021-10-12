@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 interface MusicCardProps {
   color?: string;
+  active?: boolean;
 }
 
 export const MusicCard = styled(motion.li)<MusicCardProps>`
@@ -18,6 +19,8 @@ export const MusicCard = styled(motion.li)<MusicCardProps>`
 
   list-style: none;
   border-radius: 5px;
+
+  opacity: ${(props) => (props.active ? "1" : "0.5")};
 
   background: ${(props) =>
     props.color ? props.color : "var(--chakra-colors-gray-700)"};

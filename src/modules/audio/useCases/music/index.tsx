@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 
 import { usePalette } from "react-palette";
 
@@ -10,7 +10,6 @@ import { MusicList } from "./styles";
 import { MusicCardContainer } from "./components/musicCard";
 
 interface MusicSectionProps {
-  active?: boolean;
   music?: {
     MUSIC_SECTION_BEHVAVIOR: string;
     items: {
@@ -44,9 +43,21 @@ interface MusicSectionProps {
     duration_ms?: number;
     active?: boolean;
   }) => void;
+
+  toggleActive: (musicTrack: {
+    uri?: string;
+    name?: string;
+    album?: {
+      name?: string;
+      images?: { url?: string; height?: number; width?: number }[];
+      artists?: { name?: string };
+    };
+    duration_ms?: number;
+    active?: boolean;
+  }) => void;
 }
 
-interface MusicTrackProps {
+interface MusicImageProps {
   url?: string;
   height?: number;
   width?: number;
@@ -55,9 +66,9 @@ interface MusicTrackProps {
 export const MusicSection = ({
   music,
   selectedTrack,
-  active,
+  toggleActive,
 }: MusicSectionProps) => {
-  const attachPallete = (images: MusicTrackProps[]) => {
+  const attachPallete = (images: MusicImageProps[]) => {
     if (images.length) {
       const imageUrl = returnImageUrl(returnIndexOfArray(images, 1));
 
@@ -71,6 +82,8 @@ export const MusicSection = ({
     <MusicList>
       {music?.items.map((musicTrack) => (
         <MusicCardContainer
+          behavior={music.MUSIC_SECTION_BEHVAVIOR}
+          toggleActive={toggleActive}
           selectedTrack={selectedTrack}
           musicTrack={musicTrack}
           attachPallete={attachPallete}
