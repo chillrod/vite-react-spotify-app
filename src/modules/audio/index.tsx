@@ -100,23 +100,22 @@ export const Audio = () => {
     setPlayerQueue(removeAndUpdate);
   };
 
-  const handlePlayTrack = useCallback(
-    ({ device }) => {
+  const handlePlayTrack = ({ device }: any) => {
+    if (parseMusicList().MUSIC_SECTION_BEHVAVIOR === "Queue") {
       const filterActives = getPlayerQueue.filter(
         (playerQueue: { uri?: string; active?: boolean; img?: string }) =>
           playerQueue.active
       );
 
-      // const playTrack = PlayerController.hooks.playTrack({
-      //   device,
-      //   access_token: accessToken,
-      //   filterActives: filterActives[3],
-      // });
+      const playTrack = PlayerController.hooks.playTrack({
+        device,
+        access_token: accessToken,
+        filterActives: filterActives[2],
+      });
 
-      // return playTrack;
-    },
-    [getPlayerQueue]
-  );
+      return playTrack;
+    }
+  };
 
   const parseMusicList = useCallback(() => {
     if (getPlayerQueue.length > 1 && !getIsSearching) {

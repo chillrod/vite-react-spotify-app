@@ -75,6 +75,7 @@ export const MusicCardContainer = ({
     <MusicCard
       whileHover={{ scale: 1.05 }}
       active={musicTrack?.active}
+      behavior={behavior}
       color={
         musicTrack?.album?.images
           ? attachPallete(musicTrack?.album?.images)
