@@ -15,8 +15,10 @@ export const MusicCard = styled(motion.li)<MusicCardProps>`
   display: grid;
   grid-template-rows: 2fr 1fr;
 
-  min-height: 32ch;
+  height: 32ch;
+  width: 20ch;
   min-width: 20ch;
+  min-height: 32ch;
 
   list-style: none;
   border-radius: 5px;

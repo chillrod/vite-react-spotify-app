@@ -28,6 +28,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   return (
     <>
       <motion.div
+        className="ui-button"
         whileHover={{
           y: -2,
         }}
@@ -44,7 +45,6 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
           isLoading={isLoading}
           colorScheme={color}
           onClick={onClick}
-          mt="3"
         >
           {text}
         </Button>

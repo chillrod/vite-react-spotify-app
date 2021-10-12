@@ -118,7 +118,7 @@ export const Audio = () => {
   };
 
   const parseMusicList = useCallback(() => {
-    if (getPlayerQueue.length > 1 && !getIsSearching) {
+    if (!getIsSearching) {
       return {
         MUSIC_SECTION_BEHVAVIOR: "Queue",
         items: getPlayerQueue.slice(1),

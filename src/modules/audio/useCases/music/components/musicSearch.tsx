@@ -6,9 +6,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { MusicController } from "../controller";
 
-import { InputComponent } from "../../../../../shared-components/UI/Input";
-
 import { AudioSearchSection } from "./musicSearch.styles";
+import { InputComponent } from "../../../../../shared-components/UI/Input";
+import { ButtonComponent } from "../../../../../shared-components/UI/Button";
+import { parseSearchButton } from "../../../../../helpers/parseSearchButton";
 
 export const MusicSearch = ({ accessToken }: any) => {
   const setSearchedMusic = useSetRecoilState(
@@ -16,6 +17,7 @@ export const MusicSearch = ({ accessToken }: any) => {
   );
 
   const setIsSerching = useSetRecoilState(MusicController.state.setIsSerching);
+  const getIsSearching = useRecoilValue(MusicController.state.getIsSearching);
 
   const getSearchedMusic = useRecoilValue(
     MusicController.state.getSearchedMusic
@@ -36,15 +38,15 @@ export const MusicSearch = ({ accessToken }: any) => {
             setSearchedMusic(res?.tracks?.items);
           });
       }
-
-      if (!event.target.value.length) {
-        setIsSerching(false);
-      }
     },
     [accessToken, getSearchedMusic.length]
   );
 
   const searchDebouncer = debounce(handleSearchQuery, 600);
+
+  const handleBackToQueue = () => {
+    setIsSerching(!getIsSearching);
+  };
 
   return (
     <AudioSearchSection>
@@ -53,6 +55,10 @@ export const MusicSearch = ({ accessToken }: any) => {
         placeholder="Search"
         onChange={searchDebouncer}
         variant="filled"
+      />
+      <ButtonComponent
+        onClick={() => handleBackToQueue()}
+        text={parseSearchButton(getIsSearching)}
       />
     </AudioSearchSection>
   );
