@@ -5,6 +5,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { UserAuthController } from "../user/useCases/user-auth/controller";
 import { MusicController } from "./useCases/music/controller";
 import { PlayerController } from "./useCases/player/controller";
+import { handleToggleActive } from "./useCases/music/hooks/handleToggleActive";
+import { handleSelectedMusic } from "./useCases/music/hooks/handleSelectedMusic";
 
 import { MusicSection } from "./useCases/music";
 import { PlayerSection } from "./useCases/player";
@@ -26,7 +28,6 @@ interface MusicTrackProps {
 
 export const Audio = () => {
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
-
   const isUserAuthenticated = useRecoilValue(
     UserAuthController.state.getIsUserAuthenticated
   );
@@ -34,7 +35,6 @@ export const Audio = () => {
   const setSearchMusic = useSetRecoilState(
     MusicController.state.setSearchedMusic
   );
-
   const getSearchMusic = useRecoilValue(MusicController.state.getSearchedMusic);
 
   const getIsSearching = useRecoilValue(MusicController.state.getIsSearching);
@@ -45,7 +45,6 @@ export const Audio = () => {
   const setPlayerQueue = useSetRecoilState(
     PlayerController.state.setPlayerQueue
   );
-
   const getPlayerQueue = useRecoilValue(PlayerController.state.getPlayerQueue);
 
   const handleRecommendations = useCallback(() => {
@@ -64,41 +63,11 @@ export const Audio = () => {
     }
   }, [isUserAuthenticated]);
 
-  const handleSelectedMusic = (musicTrack: MusicTrackProps) => {
-    const checkIfMusicExists = getPlayerQueue.some(
-      (track: { uri?: string }) => track.uri === musicTrack.uri
-    );
+  const selectedMusic = (musicTrack: MusicTrackProps) =>
+    handleSelectedMusic(musicTrack, getPlayerQueue, setPlayerQueue);
 
-    if (!checkIfMusicExists) {
-      setPlayerQueue((oldState) => [...oldState, musicTrack]);
-    }
-
-    // setSelectedMusic({
-    //   uri: musicTrack?.uri,
-    //   name: musicTrack?.name,
-    //   image: musicTrack?.image,
-    // });
-  };
-
-  const handleToggleActive = (musicTrack: MusicTrackProps) => {
-    const findTrackToUpdate =
-      getPlayerQueue.find(
-        (musicToSearch: { uri?: string }) =>
-          musicToSearch.uri === musicTrack.uri
-      ) || "";
-
-    const getIndex = getPlayerQueue.indexOf(findTrackToUpdate);
-
-    const removeAndUpdate = getPlayerQueue.map(
-      (queues: any, queuesIndex: number) => {
-        if (queuesIndex === getIndex) queues = musicTrack;
-
-        return queues;
-      }
-    );
-
-    setPlayerQueue(removeAndUpdate);
-  };
+  const toggleActive = (musicTrack: MusicTrackProps) =>
+    handleToggleActive(musicTrack, getPlayerQueue, setPlayerQueue);
 
   const handlePlayTrack = ({ device }: any) => {
     if (parseMusicList().MUSIC_SECTION_BEHVAVIOR === "Queue") {
@@ -110,7 +79,7 @@ export const Audio = () => {
       const playTrack = PlayerController.hooks.playTrack({
         device,
         access_token: accessToken,
-        filterActives: filterActives[2],
+        filterActives: filterActives[1],
       });
 
       return playTrack;
@@ -142,8 +111,8 @@ export const Audio = () => {
           <AudioSection>
             <MusicSection
               music={parseMusicList()}
-              toggleActive={handleToggleActive}
-              selectedTrack={handleSelectedMusic}
+              toggleActive={toggleActive}
+              selectedTrack={selectedMusic}
             />
             <PlayerSection
               isPlaying={[getIsPlaying, setIsPlaying]}

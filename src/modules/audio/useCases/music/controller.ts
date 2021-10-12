@@ -4,11 +4,12 @@ import { getSearchedMusic } from "../../getters/getSearchedMusic";
 import { selectedMusicData } from "../../model/selectedMusicData";
 import { getSelectedMusic } from "../../getters/getSelectedMusic";
 
+import { getIsSearching } from "../../getters/getIsSearching";
+import { isSearchingData } from "../../model/isSearching";
+
 import { searchMusic } from "./hooks/searchMusic";
 import { recommendedMusics } from "./hooks/recommendedMusics";
 import { setSelectedMusic } from "./hooks/selectedMusic";
-import { getIsSearching } from "../../getters/getIsSearching";
-import { isSearchingData } from "../../model/isSearching";
 
 export const MusicController = {
   state: {

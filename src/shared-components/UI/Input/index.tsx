@@ -2,6 +2,7 @@ import React from "react";
 
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { Search } from "react-feather";
+import { SpotleafColors } from "../../../config/spotleaf/colors";
 
 interface InputComponentProps {
   placeholder: string;
@@ -21,7 +22,12 @@ export const InputComponent = ({
   return (
     <>
       <InputGroup>
-        {search && <InputLeftElement color="gray.200" children={<Search />} />}
+        {search && (
+          <InputLeftElement
+            color={SpotleafColors.primary}
+            children={<Search />}
+          />
+        )}
         <Input
           placeholder={placeholder}
           value={value}

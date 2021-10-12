@@ -9,14 +9,14 @@ import { CurrentPlayingState } from "../../../modules/audio/useCases/player/comp
 import SpotleafLogo from "../../../config/spotleaf/logo.svg";
 import SpotleafInsideLogo from "../../../config/spotleaf/insidelogo.svg";
 
+import { MusicSearch } from "../../../modules/audio/useCases/music/components/musicSearch";
+
 import {
   NavBarContainer,
   NavBarMusicContainer,
   NavBarInsideLogo,
   NavBarLogo,
 } from "./styles";
-
-import { MusicSearch } from "../../../modules/audio/useCases/music/components/musicSearch";
 
 export const NavBar = () => {
   const getIsUserAuthenticated = useRecoilValue(

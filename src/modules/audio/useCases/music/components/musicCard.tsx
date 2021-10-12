@@ -71,7 +71,7 @@ export const MusicCardContainer = ({
   musicTrack,
   attachPallete,
 }: MusicSectionProps) => {
-  const parseMusicCardBehavior = (behavior?: string) => {
+  const parseOnClickBehavior = (behavior?: string) => {
     if (behavior === "Search") {
       selectedTrack({
         uri: musicTrack?.uri,
@@ -100,6 +100,18 @@ export const MusicCardContainer = ({
       });
     }
   };
+
+  const parseMusicCardQueueTextBehavior = (
+    behavior?: string,
+    active?: boolean
+  ) => {
+    if (behavior !== "Queue") return;
+
+    if (!active) return "Removed from queue";
+
+    return "Active in order";
+  };
+
   return (
     <MusicCard
       whileHover={{ scale: 1.05 }}
@@ -111,7 +123,7 @@ export const MusicCardContainer = ({
           : ""
       }
       key={musicTrack?.uri}
-      onClick={() => parseMusicCardBehavior(behavior)}
+      onClick={() => parseOnClickBehavior(behavior)}
     >
       <img
         src={returnImageUrl(returnIndexOfArray(musicTrack?.album?.images, 1))}
@@ -126,6 +138,11 @@ export const MusicCardContainer = ({
           }
           as="p"
           size="sm"
+        />
+        <TextComponent
+          isText
+          text={parseMusicCardQueueTextBehavior(behavior, musicTrack?.active)}
+          fontSize=".9rem"
         />
       </MusicCardData>
     </MusicCard>
