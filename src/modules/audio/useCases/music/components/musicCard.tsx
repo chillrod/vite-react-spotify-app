@@ -71,6 +71,35 @@ export const MusicCardContainer = ({
   musicTrack,
   attachPallete,
 }: MusicSectionProps) => {
+  const parseMusicCardBehavior = (behavior?: string) => {
+    if (behavior === "Search") {
+      selectedTrack({
+        uri: musicTrack?.uri,
+        name: musicTrack?.name,
+        album: {
+          name: musicTrack?.album?.name,
+          images: musicTrack?.album?.images,
+          artists: musicTrack?.album?.artists,
+        },
+        active: true,
+        duration_ms: musicTrack?.duration_ms,
+      });
+    }
+
+    if (behavior === "Queue") {
+      toggleActive({
+        uri: musicTrack?.uri,
+        name: musicTrack?.name,
+        album: {
+          name: musicTrack?.album?.name,
+          images: musicTrack?.album?.images,
+          artists: musicTrack?.album?.artists,
+        },
+        active: !musicTrack?.active,
+        duration_ms: musicTrack?.duration_ms,
+      });
+    }
+  };
   return (
     <MusicCard
       whileHover={{ scale: 1.05 }}
@@ -82,33 +111,7 @@ export const MusicCardContainer = ({
           : ""
       }
       key={musicTrack?.uri}
-      onClick={
-        behavior === "Search"
-          ? () =>
-              selectedTrack({
-                uri: musicTrack?.uri,
-                name: musicTrack?.name,
-                album: {
-                  name: musicTrack?.album?.name,
-                  images: musicTrack?.album?.images,
-                  artists: musicTrack?.album?.artists,
-                },
-                active: true,
-                duration_ms: musicTrack?.duration_ms,
-              })
-          : () =>
-              toggleActive({
-                uri: musicTrack?.uri,
-                name: musicTrack?.name,
-                album: {
-                  name: musicTrack?.album?.name,
-                  images: musicTrack?.album?.images,
-                  artists: musicTrack?.album?.artists,
-                },
-                active: !musicTrack?.active,
-                duration_ms: musicTrack?.duration_ms,
-              })
-      }
+      onClick={() => parseMusicCardBehavior(behavior)}
     >
       <img
         src={returnImageUrl(returnIndexOfArray(musicTrack?.album?.images, 1))}
