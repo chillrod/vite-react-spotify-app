@@ -1,16 +1,12 @@
-const authBaseURL = "https://accounts.spotify.com/en/authorize";
+import { HandleAuthorizationDTO } from "../dto";
 
-interface HandleAuthorizationProps {
-  client_id: string;
-  redirect_uri: string;
-  scopes: string[];
-}
+const authBaseURL = "https://accounts.spotify.com/en/authorize";
 
 export const handleAuthorization = ({
   client_id,
   redirect_uri,
   scopes,
-}: HandleAuthorizationProps) => {
+}: HandleAuthorizationDTO) => {
   window.location.href = `${authBaseURL}?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scopes
     .join(" ")
     .replace(" ", "%20")}`;

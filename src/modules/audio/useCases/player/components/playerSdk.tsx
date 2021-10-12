@@ -2,12 +2,9 @@ import React, { useCallback } from "react";
 
 import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 
-interface PlayerSdkProps {
-  children?: JSX.Element;
-  getAccessToken: any;
-}
+import { PlayerSdkDTO } from "../dto";
 
-export const PlayerSdk = ({ children, getAccessToken }: PlayerSdkProps) => {
+export const PlayerSdk = ({ children, getAccessToken }: PlayerSdkDTO) => {
   const getOAuthToken = useCallback((callback) => callback(getAccessToken), []);
 
   return (

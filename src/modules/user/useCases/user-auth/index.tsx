@@ -5,15 +5,9 @@ import { AuthContainer } from "./styles";
 import { ButtonComponent } from "../../../../shared-components/UI/Button";
 import { TextComponent } from "../../../../shared-components/UI/Text";
 import { SpotleafColors } from "../../../../config/spotleaf/colors";
+import { AuthSectionDTO } from "./dto";
 
-interface AuthSectionProps {
-  authBehavior: string;
-  client_id: string;
-  redirect_uri: string;
-  scopes: string[];
-}
-
-export const AuthSection: React.FC<AuthSectionProps> = ({
+export const AuthSection: React.FC<AuthSectionDTO> = ({
   authBehavior,
   client_id,
   redirect_uri,

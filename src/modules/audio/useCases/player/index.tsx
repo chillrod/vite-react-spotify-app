@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SetterOrUpdater } from "recoil";
+import { PlayerSectionDTO } from "./dto";
 
 import { PlayerSdk } from "./components/playerSdk";
 import { SpotifyPlayer } from "./components/player";
@@ -8,19 +8,13 @@ import { PlayerState } from "./components/playerState";
 import { PlayTrack } from "./components/playTrack";
 
 import { PlayerGUI } from "./styles";
-interface PlayerSectionProps {
-  playTrack: SetterOrUpdater<boolean>;
-  getAccessToken?: any;
-  isPlaying: [boolean, SetterOrUpdater<boolean>];
-  queueChanged: {}[];
-}
 
 export const PlayerSection = ({
   playTrack,
   getAccessToken,
   queueChanged,
   isPlaying: [getIsPlaying, setIsPlaying],
-}: PlayerSectionProps) => {
+}: PlayerSectionDTO) => {
   return (
     <>
       <PlayerSdk getAccessToken={getAccessToken}>

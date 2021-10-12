@@ -1,5 +1,7 @@
 import React from "react";
 
+import { MusicCardDTO } from "../dto";
+
 import { returnImageUrl } from "../../../../../helpers/imageUrl";
 
 import { returnArtist } from "../../../../../helpers/returnArtist";
@@ -10,67 +12,13 @@ import { TextComponent } from "../../../../../shared-components/UI/Text";
 
 import { MusicCard, MusicCardData } from "./musicCard.styles";
 
-interface MusicImageProps {
-  url?: string;
-  height?: number;
-  width?: number;
-}
-
-interface MusicSectionProps {
-  behavior?: string;
-  musicTrack?: {
-    active?: boolean;
-    name?: string;
-    uri?: string;
-    duration_ms?: number;
-
-    album?: {
-      name?: string;
-
-      artists?: {
-        name?: string;
-      };
-
-      images: {
-        url?: string;
-        height?: number;
-        width?: number;
-      }[];
-    };
-  };
-  attachPallete: (images: MusicImageProps[]) => string | undefined;
-
-  selectedTrack: (musicTrack: {
-    uri?: string;
-    name?: string;
-    album?: {
-      name?: string;
-      images?: { url?: string; height?: number; width?: number }[];
-      artists?: { name?: string };
-    };
-    duration_ms?: number;
-    active?: boolean;
-  }) => void;
-
-  toggleActive: (musicTrack: {
-    uri?: string;
-    name?: string;
-    album?: {
-      name?: string;
-      images?: { url?: string; height?: number; width?: number }[];
-      artists?: { name?: string };
-    };
-    duration_ms?: number;
-    active?: boolean;
-  }) => void;
-}
 export const MusicCardContainer = ({
   behavior,
   selectedTrack,
   toggleActive,
   musicTrack,
   attachPallete,
-}: MusicSectionProps) => {
+}: MusicCardDTO) => {
   const parseOnClickBehavior = (behavior?: string) => {
     if (behavior === "Search") {
       selectedTrack({

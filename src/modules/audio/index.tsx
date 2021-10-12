@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
+
+import { MusicTrackDTO } from "./dto";
 
 import { UserAuthController } from "../user/useCases/user-auth/controller";
 import { MusicController } from "./useCases/music/controller";
 import { PlayerController } from "./useCases/player/controller";
+
 import { handleToggleActive } from "./useCases/music/hooks/handleToggleActive";
 import { handleSelectedMusic } from "./useCases/music/hooks/handleSelectedMusic";
 
@@ -12,19 +15,6 @@ import { MusicSection } from "./useCases/music";
 import { PlayerSection } from "./useCases/player";
 
 import { AudioSection } from "./styles";
-
-interface MusicTrackProps {
-  uri?: string;
-  name?: string;
-  album?: {
-    name?: string;
-    images?: { url?: string; height?: number; width?: number }[];
-    artists?: { name?: string };
-  };
-  artists?: { name: string };
-  active?: boolean;
-  duration_ms?: number;
-}
 
 export const Audio = () => {
   const accessToken = useRecoilValue(UserAuthController.state.getToken);
@@ -63,10 +53,10 @@ export const Audio = () => {
     }
   }, [isUserAuthenticated]);
 
-  const selectedMusic = (musicTrack: MusicTrackProps) =>
+  const selectedMusic = (musicTrack: MusicTrackDTO) =>
     handleSelectedMusic(musicTrack, getPlayerQueue, setPlayerQueue);
 
-  const toggleActive = (musicTrack: MusicTrackProps) =>
+  const toggleActive = (musicTrack: MusicTrackDTO) =>
     handleToggleActive(musicTrack, getPlayerQueue, setPlayerQueue);
 
   const handlePlayTrack = ({ device }: any) => {

@@ -1,20 +1,8 @@
 import axios from "axios";
 
+import { HandleTokenDTO, TokenRequestDTO } from "../dto";
+
 const handleTokenBaseURL = "https://accounts.spotify.com/api/token";
-
-interface HandleTokenProps {
-  code: string;
-  grant_type: string;
-  redirect_uri: string;
-  client_id?: string | undefined;
-  client_secret?: string | true | undefined;
-}
-
-interface TokenRequest {
-  data: {
-    access_token: string;
-  };
-}
 
 export const handleToken = async ({
   grant_type,
@@ -22,11 +10,11 @@ export const handleToken = async ({
   redirect_uri,
   client_id,
   client_secret,
-}: HandleTokenProps) => {
+}: HandleTokenDTO) => {
   const clientCredentials = btoa(`${client_id}:${client_secret}`);
 
   try {
-    const request: TokenRequest = await axios.post(handleTokenBaseURL, "", {
+    const request: TokenRequestDTO = await axios.post(handleTokenBaseURL, "", {
       params: {
         grant_type: grant_type,
         code: code,
