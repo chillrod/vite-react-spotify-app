@@ -10,7 +10,7 @@ export interface PlayerSdkDTO {
 }
 
 export interface PlayTrackDTO {
-  playTrack?: any;
+  playTrack?: SetterOrUpdater<boolean>;
   isPlaying: [boolean, SetterOrUpdater<boolean>];
   queueChanged: {}[];
   children?: JSX.Element;

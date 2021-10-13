@@ -1,3 +1,5 @@
+import { SetterOrUpdater } from "recoil";
+
 export interface MusicSectionDTO {
   music?: {
     MUSIC_SECTION_BEHVAVIOR: string;
@@ -5,6 +7,7 @@ export interface MusicSectionDTO {
       name?: string;
       uri?: string;
       duration_ms?: number;
+      order?: number;
 
       album?: {
         name?: string;
@@ -21,6 +24,8 @@ export interface MusicSectionDTO {
       };
     }[];
   };
+  queueOrder: [number, SetterOrUpdater<number>];
+
   selectedTrack: (musicTrack: {
     uri?: string;
     name?: string;
@@ -36,6 +41,7 @@ export interface MusicSectionDTO {
   toggleActive: (musicTrack: {
     uri?: string;
     name?: string;
+    order?: number;
     album?: {
       name?: string;
       images?: { url?: string; height?: number; width?: number }[];
@@ -60,11 +66,13 @@ interface MusicCardImageDTO {
 
 export interface MusicCardDTO {
   behavior?: string;
+  queueOrder: [number, SetterOrUpdater<number>];
   musicTrack?: {
     active?: boolean;
     name?: string;
     uri?: string;
     duration_ms?: number;
+    order?: number;
 
     album?: {
       name?: string;
@@ -92,11 +100,13 @@ export interface MusicCardDTO {
     };
     duration_ms?: number;
     active?: boolean;
+    order?: any;
   }) => void;
 
   toggleActive: (musicTrack: {
     uri?: string;
     name?: string;
+    order?: number;
     album?: {
       name?: string;
       images?: { url?: string; height?: number; width?: number }[];

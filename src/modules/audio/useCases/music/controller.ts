@@ -7,9 +7,14 @@ import { getSelectedMusic } from "../../getters/getSelectedMusic";
 import { getIsSearching } from "../../getters/getIsSearching";
 import { isSearchingData } from "../../model/isSearching";
 
+import { queueOrderData } from "../../model/queueOrder";
+import { getQueueOrder } from "../../getters/getQueueOrder";
+
 import { searchMusic } from "./hooks/searchMusic";
 import { recommendedMusics } from "./hooks/recommendedMusics";
 import { setSelectedMusic } from "./hooks/selectedMusic";
+import { handleToggleActive } from "./hooks/handleToggleActive";
+import { handleSelectedMusic } from "./hooks/handleSelectedMusic";
 
 export const MusicController = {
   state: {
@@ -19,10 +24,14 @@ export const MusicController = {
     getIsSearching,
     setSelectedMusic: selectedMusicData,
     getSelectedMusic: getSelectedMusic,
+    getQueueOrder,
+    setQueueOrder: queueOrderData,
   },
   hooks: {
     searchMusic,
     recommendedMusics,
     setSelectedMusic,
+    handleToggleActive,
+    handleSelectedMusic,
   },
 };

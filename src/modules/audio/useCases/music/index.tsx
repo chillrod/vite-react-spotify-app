@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { usePalette } from "react-palette";
 
@@ -15,6 +15,7 @@ export const MusicSection = ({
   music,
   selectedTrack,
   toggleActive,
+  queueOrder,
 }: MusicSectionDTO) => {
   const attachPallete = (images: MusicImageDTO[]) => {
     if (images.length) {
@@ -32,6 +33,7 @@ export const MusicSection = ({
         <MusicCardContainer
           behavior={music.MUSIC_SECTION_BEHVAVIOR}
           toggleActive={toggleActive}
+          queueOrder={queueOrder}
           selectedTrack={selectedTrack}
           musicTrack={musicTrack}
           attachPallete={attachPallete}

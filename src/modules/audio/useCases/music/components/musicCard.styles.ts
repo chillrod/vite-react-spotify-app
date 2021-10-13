@@ -62,3 +62,7 @@ export const MusicCardData = styled.div`
   display: grid;
   flex-direction: column;
 `;
+
+export const MusicCardBadge = styled.div`
+  margin-top: 0.5em;
+`;

@@ -8,9 +8,6 @@ import { UserAuthController } from "../user/useCases/user-auth/controller";
 import { MusicController } from "./useCases/music/controller";
 import { PlayerController } from "./useCases/player/controller";
 
-import { handleToggleActive } from "./useCases/music/hooks/handleToggleActive";
-import { handleSelectedMusic } from "./useCases/music/hooks/handleSelectedMusic";
-
 import { MusicSection } from "./useCases/music";
 import { PlayerSection } from "./useCases/player";
 
@@ -37,6 +34,9 @@ export const Audio = () => {
   );
   const getPlayerQueue = useRecoilValue(PlayerController.state.getPlayerQueue);
 
+  const setQueueOrder = useSetRecoilState(MusicController.state.setQueueOrder);
+  const getQueueOrder = useRecoilValue(MusicController.state.getQueueOrder);
+
   const handleRecommendations = useCallback(() => {
     // TODO Fix api call if user refreshs screen ( needs to verify if recommendations length already exists)
     if (isUserAuthenticated) {
@@ -54,10 +54,19 @@ export const Audio = () => {
   }, [isUserAuthenticated]);
 
   const selectedMusic = (musicTrack: MusicTrackDTO) =>
-    handleSelectedMusic(musicTrack, getPlayerQueue, setPlayerQueue);
+    MusicController.hooks.handleSelectedMusic(
+      musicTrack,
+      getPlayerQueue,
+      setPlayerQueue
+    );
 
   const toggleActive = (musicTrack: MusicTrackDTO) =>
-    handleToggleActive(musicTrack, getPlayerQueue, setPlayerQueue);
+    MusicController.hooks.handleToggleActive(
+      musicTrack,
+      getPlayerQueue,
+      setPlayerQueue,
+      setQueueOrder
+    );
 
   const handlePlayTrack = ({ device }: any) => {
     if (parseMusicList().MUSIC_SECTION_BEHVAVIOR === "Queue") {
@@ -103,6 +112,7 @@ export const Audio = () => {
               music={parseMusicList()}
               toggleActive={toggleActive}
               selectedTrack={selectedMusic}
+              queueOrder={[getQueueOrder, setQueueOrder]}
             />
             <PlayerSection
               isPlaying={[getIsPlaying, setIsPlaying]}

@@ -11,6 +11,7 @@ interface MusicTrackProps {
   artists?: { name: string };
   active?: boolean;
   duration_ms?: number;
+  order?: number;
 }
 
 export const handleSelectedMusic = (

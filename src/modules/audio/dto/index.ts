@@ -9,4 +9,5 @@ export interface MusicTrackDTO {
   artists?: { name: string };
   active?: boolean;
   duration_ms?: number;
+  order?: number;
 }

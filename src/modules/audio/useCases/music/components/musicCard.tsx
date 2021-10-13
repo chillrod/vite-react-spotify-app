@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useRecoilValue } from "recoil";
+
 import { MusicCardDTO } from "../dto";
 
 import { returnImageUrl } from "../../../../../helpers/imageUrl";
@@ -9,8 +11,9 @@ import { returnArtist } from "../../../../../helpers/returnArtist";
 import { returnIndexOfArray } from "../../../../../helpers/returnIndex";
 
 import { TextComponent } from "../../../../../shared-components/UI/Text";
+import { BadgeComponent } from "../../../../../shared-components/UI/Badge";
 
-import { MusicCard, MusicCardData } from "./musicCard.styles";
+import { MusicCard, MusicCardData, MusicCardBadge } from "./musicCard.styles";
 
 export const MusicCardContainer = ({
   behavior,
@@ -18,6 +21,7 @@ export const MusicCardContainer = ({
   toggleActive,
   musicTrack,
   attachPallete,
+  queueOrder,
 }: MusicCardDTO) => {
   const parseOnClickBehavior = (behavior?: string) => {
     if (behavior === "Search") {
@@ -29,7 +33,7 @@ export const MusicCardContainer = ({
           images: musicTrack?.album?.images,
           artists: musicTrack?.album?.artists,
         },
-        active: true,
+        active: false,
         duration_ms: musicTrack?.duration_ms,
       });
     }
@@ -43,7 +47,8 @@ export const MusicCardContainer = ({
           images: musicTrack?.album?.images,
           artists: musicTrack?.album?.artists,
         },
-        active: !musicTrack?.active,
+        order: queueOrder[0],
+        active: musicTrack?.active,
         duration_ms: musicTrack?.duration_ms,
       });
     }
@@ -51,13 +56,24 @@ export const MusicCardContainer = ({
 
   const parseMusicCardQueueTextBehavior = (
     behavior?: string,
-    active?: boolean
+    active?: boolean,
+    order?: number
   ) => {
-    if (behavior !== "Queue") return;
-
     if (!active) return "Removed from queue";
 
-    return "Active in order";
+    return `Active in order ${order}`;
+  };
+
+  const parseBadgeVariant = (active?: boolean) => {
+    if (!active) return "subtle";
+
+    return "solid";
+  };
+
+  const parseBadgeColor = (active?: boolean) => {
+    if (!active) return "red";
+
+    return "green";
   };
 
   return (
@@ -87,11 +103,20 @@ export const MusicCardContainer = ({
           as="p"
           size="sm"
         />
-        <TextComponent
-          isText
-          text={parseMusicCardQueueTextBehavior(behavior, musicTrack?.active)}
-          fontSize=".9rem"
-        />
+
+        {behavior === "Queue" && (
+          <MusicCardBadge>
+            <BadgeComponent
+              colorScheme={parseBadgeColor(musicTrack?.active)}
+              variant={parseBadgeVariant(musicTrack?.active)}
+              text={parseMusicCardQueueTextBehavior(
+                behavior,
+                musicTrack?.active,
+                musicTrack?.order
+              )}
+            />
+          </MusicCardBadge>
+        )}
       </MusicCardData>
     </MusicCard>
   );
